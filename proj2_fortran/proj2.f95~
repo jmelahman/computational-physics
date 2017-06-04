@@ -1,0 +1,162 @@
+program proj2
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!   Prjoect II: The Structure of White Dwarf Stars
+!   Uses the central density of a star to determine
+!   the total mass, radius, gravitational energy,
+!   kinetic energy of electrons and total energy.
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+implicit none
+    real :: rho                     !Scaled rho
+    real :: rho1,rho2               !Initial and final rho
+    real :: rho0                    !Rho scaling factor
+    real :: Ye                      !Electron to nucleon ratio
+    real :: h                       !Logarithmic step for rho
+    integer :: i                    !Counter
+    integer :: imax                 !Number of models
+
+10  print *,'Enter the value of Ye [0 < Ye <= 1]'
+    read *,Ye
+    print *,'Working values in kg/m^3 [1E8 < RHO <= 1E18]'
+20  print *,'Enter the intitial density'
+    read *,rho1
+    print *,'Enter the final density'
+    read *,rho2
+    print *,'Enter the number of points'
+    read *,imax
+!Makes sure that 0 < Ye <= 1
+    if (Ye > 1.0 .OR. Ye <= 0) then
+        print *,'0 < Ye <= 1'
+        goto 10
+    end if
+!Makes sure that rho2 > rho1
+    if (rho2 <= rho1)then
+        print *,'Final density > initial'
+        goto 20
+    end if
+!Scales rho. h is scaled logarithmically between rho intital and rho final
+    rho0 = 9.79E8/Ye
+    rho1 = rho1/rho0
+    rho2 = rho2/rho0
+    h = log(rho2-rho1)/(imax-1)
+
+    do i=0,imax-1
+        rho = exp(i*h)+rho1-1.0
+        print *,i+1
+        print *,'Electron to nucleon =',Ye
+        print *,'Central density     =',rho*rho0,'         kg/m^3'
+        call step2(rho,Ye)
+    end do
+    goto 10
+end program
+
+subroutine step2(rho,Ye)
+implicit none
+    real :: r                       !Radius of the star
+    real :: rho                     !Density of the star
+    real :: krho1,krho2,krho3,krho4 !Density terms for the Runge-Kutta
+    real :: drho                    !Derivative of rho with respect to radius
+    real :: m                       !Mass of the star
+    real :: km1,km2,km3,km4         !Mass terms for the Runge-Kutta
+    real :: dm                      !Derivative of mass with respect to radius
+    real :: dr                      !radial step
+    real :: kinetic                 !Kinetic and rest energy of electrons
+    real :: grav                    !Gravitational energy of star
+    real :: epsrho                  !Epsilon from equation II.10a
+    real :: Ye                      !Number of electrons per nucleon
+    integer :: i                    !counter
+!Sets dr. makes it smaller as rho increases
+    dr = .00001/rho**(1.0/3.0)
+    print *,'Radial step         =',dr
+!Sets values to 0
+    i = 0
+    m = 0.0
+    kinetic = 0.0
+    grav = 0.0
+    do while (rho > .0001)
+!Do loop which performs the Runge-Kutta 4 algorith to find the density and mass
+!at given values of r. Ends when rho becomes < .0001
+        i = i+1
+!Finds k1 for each equation
+        call intdr(i*dr,m,rho,drho,dm)
+        km1 = dr*dm
+        krho1 = dr*drho
+!Finds k2 for each equation
+        call intdr((i+.5)*dr,m+km1/2.0,rho+krho1/2.0,drho,dm)
+        km2 = dr*dm
+        krho2 = dr*drho
+!Finds k3 for each equation
+        call intdr((i+.5)*dr,m+km2/2.0,rho+krho2/2.0,drho,dm)
+        km3 = dr*dm
+        krho3 = dr*drho
+!Finds k4 for each equation
+        call intdr((i+1)*dr,m+km3,rho+krho3,drho,dm)
+        km4 = dr*dm
+        krho4 = dr*drho
+!Solves for m+1 and rho+1
+        m = m+(km1+2.0*km2+2.0*km3+km4)/6.0
+        rho = rho+(krho1+2.0*krho2+2.0*krho3+krho4)/6.0
+        r = i*dr
+!Returns a value for the energy
+        call eps(rho,epsrho)
+        kinetic = kinetic+r*r*epsrho
+        grav = grav+m*rho*r
+    end do
+!Newton-Cotes quadrature with extremely small h
+    kinetic = kinetic*dr
+    grav = grav*dr
+    call scale(Ye,m,r,grav,kinetic)
+    return
+end subroutine
+
+subroutine intdr(r,m,rho,drho,dm)
+!equations used when integrating with respect to the radius
+implicit none
+    real :: m           !Mass at given radius (in)
+    real :: rho         !Density !        rho = 1200.0at given radius (in)
+    real :: r           !Given radius
+    real :: drho        !Density derivative at r (out)
+    real :: dm          !Mass derivative at r (out)
+    real :: x           !Local variable to convert rho
+    real :: gamma       !local variable for gamma
+    x = rho**(1.0/3.0)
+    gamma = x*x/sqrt(1.0+x*x)/3.0
+    drho = -m*rho/gamma/r/r
+    dm = rho*r*r
+    return
+end subroutine
+
+subroutine eps(rho,epsrho)
+!Equation for epsilon in equation II.10a. Converts rho -> x
+implicit none
+    real :: rho             !Rho (in)
+    real :: epsrho          !Epsilon (out)
+    real :: x
+    x = rho**(1.0/3.0)
+    epsrho = 3.0*(x*(1+2.0*x*x)*sqrt(1+x*x)-log(x+sqrt(1+x*x)))/8.0
+    return
+end subroutine
+
+subroutine scale(Ye,m,r,grav,kinetic)
+!Inputs the final, unscaled values, scales and prints
+implicit none
+    integer, parameter :: ikind=selected_real_kind(p=15)
+    real :: m           !Final mass
+    real :: r           !Final radius
+    real :: grav        !Final gravitational energy
+    real :: kinetic     !Final kinetic energy
+    real :: Ye          !Number of electrons per nucleon
+    real :: r0          !Scaling factor for radius
+    real :: m0          !Scaling factor for mass
+    real (kind=ikind) :: e0 !Scaling factor for energy
+    r0 = 0.011096*Ye
+    m0 = 2.857*Ye*Ye
+    e0 = 2.7746E44_ikind*Ye**3
+!e0 = 4*pi*G*rho0*m0*r0^2 converted from ergs to joules
+    print *,'Total mass          =',m*m0*1.0_ikind,'M0'
+    print *,'Total radius        =',r*r0*1.0_ikind,'R0'
+    print *,'Graviational energy =',-grav*e0,'joules'
+    print *,'Kinetic energy      =',kinetic*e0,'joules'
+    print *,'Total energy        =',(kinetic-grav)*e0,'joules'
+    print *,
+    return
+end subroutine
