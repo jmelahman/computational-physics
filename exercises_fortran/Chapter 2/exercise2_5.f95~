@@ -1,0 +1,72 @@
+program exercise2
+!Models SHM with dy/dy=p and
+!dp/dt = -4ypi^2 with an initial value of
+!p(0)=-1 & y(0)=1 using 1000 steps
+!y(t) = cos(2pi*t)-sin(2pi*t)
+!p(t) = -2pi*(sin(2pi*t)+cos(2pi*t))
+implicit none
+    real :: y,p,t
+    real :: pi = 4.0*atan(1.0)
+
+10  print *,'enter a value of t'
+    read *,t
+    p = -1.0
+    y = 1.0
+
+    print *,'y exact =',cos(2.0*pi*t)-sin(2.0*pi*t)/(2.0*pi)
+    print *,'p exact =',-2.0*pi*sin(2.0*pi*t)-cos(2.0*pi*t)
+    call RungeKutta(y,p,t)
+    print *,'y = ',y
+    print *,'p = ',p
+
+    goto 10
+end program
+
+subroutine RungeKutta(y,p,t)
+!   Uses fourth-order Runge-Kutta method to integrate
+implicit none
+    real :: t,h
+    real :: p,y
+    real :: ky1,ky2,ky3,ky4
+    real :: kp1,kp2,kp3,kp4
+    real :: dy,dp
+    integer :: i
+
+    h = t/1000.0
+    do i=0,999
+!Finds k1 for each variable
+        call intdt(i*h,y,p,dy,dp)
+        ky1 = h*dy
+        kp1 = h*dp
+!Finds k2 for each variable
+        call intdt((i+.5)*h,y+ky1/2.0,p+kp1/2.0,dy,dp)
+        ky2 = h*dy
+        kp2 = h*dp
+!Finds k3 for each variable
+        call intdt((i+.5)*h,y+ky2/2.0,p+kp2/2.0,dy,dp)
+        ky3 = h*dy
+        kp3 = h*dp
+!Finds k4 for each variable
+        call intdt((i+1)*h,y+ky3,p+kp3,dy,dp)
+        ky4 = h*dy
+        kp4 = h*dp
+!Solves for y+1 and p+1
+        y = y+(ky1+2.0*ky2+2.0*ky3+ky4)/6.0
+        p = p+(kp1+2.0*kp2+2.0*kp3+kp4)/6.0
+    end do
+    return
+end subroutine
+
+subroutine intdt(t,y,p,dy,dp)
+!   integrates p and y with respect to t
+implicit none
+    real :: t           !independent variables
+    real :: y,p         !dependent variables
+    real :: dy,dp
+    real :: pi = 4.0*atan(1.0)
+    dp = -4.0*pi**2*y
+    dy = p
+    return
+end subroutine
+
+

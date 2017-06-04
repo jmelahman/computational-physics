@@ -1,0 +1,58 @@
+program exercise1_1
+!calculates the derivative for exp(x)
+implicit none
+    real :: exact
+    real :: x,h
+
+11  print *, 'Enter the value of x'
+    read *,x
+
+    exact = exp(x)
+    print *,'The exact answer is '
+    print *,exact
+
+10  print *,'Enter the value of h (enter 0 to exit)'
+    read *,h
+    if (h < 0.0000001) stop
+        call point5(x,h)
+        call symmetric(x,h)
+        goto 10
+end
+
+subroutine point5(x,h)
+!   Uses the 5 point formula (equation 1.5)
+implicit none
+    real :: val,sum,f
+    real :: x,h
+    integer :: i
+    sum = 0
+15  do i=-2,2
+        f = exp(x+i*h)
+        val = 0
+        if (i == -2) then
+            val = f
+        else if (i == -1) then
+            val = -8.0*f
+        else if (i == 0) then
+            val = 0.0
+        else if (i == 1) then
+            val = 8.0*f
+        else
+            val = -f
+        end if
+        sum = sum + val/(12.0*h)
+    end do
+    print *,'5-Point method yields:',sum
+end subroutine point5
+
+subroutine symmetric(x,h)
+!   Uses the two point formual (Equation 1.3b)
+implicit none
+    real :: val
+    real :: x,h
+    real :: f
+    integer :: i
+        val = (exp(x+h)-exp(x-h))/(2.*h)
+    print*,'Symmetric method yields: ',val
+    print*,''
+end subroutine symmetric

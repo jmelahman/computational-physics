@@ -1,0 +1,179 @@
+program exercise2_6
+!Uses an assortment of techniques to solve the
+!the differential equation dy/dx=-xy with
+!an initial value of y(0)=1 & using 16 steps
+implicit none
+    real :: x,y
+    real :: h
+    real :: error
+
+10  print *,'enter a value of x'
+    read *,x
+    y = 1.0
+    h = x/16.0
+
+    print *,'exact:              ',exp(-x)
+
+    print *,
+    call euler(x,y,h)
+    error = y-exp(-x)
+    print *,'Euler error:        ',error
+
+    y = 1.0
+    call adams2(x,y,h)
+    error = y-exp(-x)
+    print *,'Adams2 error:       ',error
+
+    y = 1.0
+    call adams4(x,y,h)
+    error = y-exp(-x)
+    print *,'Adams4 error:       ',error
+
+    y = 1.0
+    call taylor(x,y,h)
+    error = y-exp(-x)
+    print *,'Taylor error:       ',error
+
+    y = 1.0
+    call rk2(x,y,h)
+    error = y-exp(-x)
+    print *,'Runge-Kutta2 error: ',error
+
+    y = 1.0
+    call rk3(x,y,h)
+    error = y-exp(-x)
+    print *,'Runge-Kutta3 error: ',error
+
+    y = 1.0
+    call rk4(x,y,h)
+    error = y-exp(-x)
+    print *,'Runge-Kutta4 error: ',error
+
+    goto 10
+end program
+
+subroutine rk4(x,y,h)
+!Uses the Runge-Kutta 4th-order method
+implicit none
+    real :: x,h
+    real :: y
+    real :: k1,k2,k3,k4
+    real ::func
+    integer :: i
+
+    do i=0,15
+        k1 = h*func(i*h,y)
+        k2 = h*func((i+.5)*h,y+k1/2.)
+        k3 = h*func((i+.5)*h,y+k2/2.)
+        k4 = h*func((i+1)*h,y+k3)
+        y = y+(k1+2.*k2+2.*k3+k4)/6.
+    end do
+
+end subroutine
+
+
+subroutine rk3(x,y,h)
+!Uses the Runge-Kutta 3rd-order method
+implicit none
+    real :: x,h
+    real :: y
+    real :: k1,k2,k3
+    real ::func
+    integer :: i
+
+    do i=0,15
+        k1 = h*func(i*h,y)
+        k2 = h*func((i+.5)*h,y+k1/2.)
+        k3 = h*func((i+1)*h,y-k1+2.*k2)
+        y = y+(k1+4.*k2+k3)/6.
+    end do
+
+end subroutine
+
+subroutine rk2(x,y,h)
+!Uses the Runge-Kutta 2nd-order method
+implicit none
+    real :: x,h
+    real :: y
+    real ::func
+    integer :: i
+
+    do i=0,15
+        y = y+h*func((i+.5)*h,y+h*func(i*h,y)/2.)
+    end do
+
+end subroutine
+
+subroutine taylor(x,y,h)
+!uses the Taylor series method. Partial
+!derivatives are df/dx = -1 and df/dy = 0
+implicit none
+    real :: x,h
+    real :: y
+    real ::func
+    integer :: i
+
+    do i=0,15
+        y = y+h*func(h*i,y)+h**2*(-func(h*i,y))/2.0
+    end do
+
+end subroutine
+
+subroutine adams4(x,y4,h)
+!Passes the inital value as y4. Uses Euler's
+!method to estimate n-1,,-2,-3 values then
+!proceeds with the Adams-Bashforth 4-step
+implicit none
+    real :: x,h
+    real :: y1,y2,y3,y4,yold
+    real ::func
+    integer :: i
+
+    y3 = y4+h*func(-h,y4)
+    y2 = y3+h*func(-h*2.,y3)
+    y1 = y3+h*func(-h*3.,y2)
+    do i=0,15
+        yold = y4
+        y4 = y4+h*(55.*func(h*i,y4)-59.*func(h*(i-1),y3)+37.*func(h*(i-2),y2)-9.*func(h*(i-3),y1))/24.
+        y1 = y2
+        y2 = y3
+        y3 = yold
+    end do
+end subroutine
+
+subroutine adams2(x,y2,h)
+!Passes the inital value as y2. Uses Euler's
+!method to estimate n-1 value then
+!proceeds with the Adams-Bashforth 2-step
+implicit none
+    real :: x,h
+    real :: y1,y2,yold
+    real ::func
+    integer :: i
+
+    y1 = y2+h*func(-h,y1)
+    do i=1,15
+        yold = y2
+        y2 = y2+h*(3.*func(h*i,y2)/2.-func(h*(i-1),y1)/2.)
+        y1 = yold
+    end do
+end subroutine
+
+subroutine euler(x,y,h)
+!Uses Euler's method
+implicit none
+    real :: x,y,h
+    real ::func
+    integer :: i
+
+    do i=0,15
+        y = y+h*func(h*i,y)
+    end do
+end subroutine
+
+real function func(x,y)
+implicit none
+    real :: x,y
+    func = -y
+    return
+end function

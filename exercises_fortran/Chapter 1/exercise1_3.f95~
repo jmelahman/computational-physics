@@ -1,0 +1,103 @@
+program exercise1_3
+!calculates the integral for (t)**(-2/3)*(1-t)**(-1/3)
+!using both a trig substiution and an u substitution.
+!Both subroutines use Bode's equation.
+implicit none
+    real :: pi=4.*atan(1.)
+    integer :: N
+
+11  print *,'Please enter the value of N (must be multiple of 4)'
+    print *,'Enter a value < 4 to exit'
+    read *,N
+
+    if (mod(N,4) > 0) goto 11
+
+    print *,'the exact answer is ',2.*pi/sqrt(3.)
+    call trig_int(N,pi)
+    call alg_int(N)
+
+    goto 11
+end program
+
+subroutine alg_int(N)
+!   Splits the integral in half, uses two different u
+!   subsitutions to solve. Sum 1 is the integral from
+!   .5-1 with t=1-u^(3/2). Sum 2 is the integral from
+!   0-.5 with t=u^3. h*i = u
+implicit none
+    real :: val,h,f,sum1,sum2
+    integer :: N,i
+
+    h = 2.**(-2./3.)/N
+
+    sum1 = 0
+    sum2 = 0
+
+    do i=0,N
+        f= 3./2.*(1-(h*i)**(3./2.))**(-2./3.)
+        val = 0
+        if (i == 0 .OR. i == N) then
+            val = 14.0*h*f/45.0
+        else if (mod(i,2) == 1) then
+            val = 64.0*h*f/45.0
+        else if (mod(i,4) == 2) then
+            val = 24.0*h*f/45.0
+        else
+            val = 28.0*h*f/45.0
+        end if
+        sum1 = sum1 + val
+    end do
+
+    h = 2.0**(-1.0/3.0)/N
+
+    do i=0,N
+        f= 3.0*(1-(h*i)**3.0)**(-1.0/3.0)
+        val = 0
+        if (i == 0 .OR. i == N) then
+            val = 14.0*h*f/45.0
+        else if (mod(i,2) == 1) then
+            val = 64.0*h*f/45.0
+        else if (mod(i,4) == 2) then
+            val = 24.0*h*f/45.0
+        else
+            val = 28.0*h*f/45.0
+        end if
+        sum2 = sum2 + val
+    end do
+
+
+    print *,'Using an algebraic substitution ',sum1+sum2
+end subroutine alg_int
+
+
+subroutine trig_int(N,pi)
+!   Subsitutes t=sin^3(x) which prevents the need
+!   to split the interval in two thus cutting calculation
+!   time in half.
+implicit none
+    real :: val,h,f,sum,pi
+    integer :: N,i
+
+    !Integral bounds become u=0,pi/2
+    h = pi/(2.*N)
+
+    sum = 0
+
+    do i=0,N
+        f= 3.0*(cos(i*h)*((1.+sin(i*h))/(1.+sin(i*h)+sin(i*h)**2)))**(1./3.)
+        val = 0
+        if (i == 0) then
+            val = 14.0*h*f/45.0
+        else if (i == N) then
+            val = 0
+        else if (mod(i,2) == 1) then
+            val = 64.0*h*f/45.0
+        else if (mod(i,4) == 2) then
+            val = 24.0*h*f/45.0
+        else
+            val = 28.0*h*f/45.0
+        end if
+        sum = sum + val
+    end do
+    print *,'Using a trig substitution: ',sum
+end subroutine trig_int

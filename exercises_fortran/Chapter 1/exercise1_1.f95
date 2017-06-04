@@ -1,0 +1,58 @@
+PROGRAM EXERCISE1_1
+!CALCULATES THE DERIVATIVE FOR EXP(X)
+IMPLICIT NONE
+    REAL :: EXACT
+    REAL :: X,H
+
+11  PRINT *, 'ENTER THE VALUE OF X'
+    READ *,X
+
+    EXACT = EXP(X)
+    PRINT *,'THE EXACT ANSWER IS '
+    PRINT *,EXACT
+
+10  PRINT *,'ENTER THE VALUE OF H (ENTER 0 TO EXIT)'
+    READ *,H
+    IF (H < 0.0000001) STOP
+        CALL POINT5(X,H)
+        CALL SYMMETRIC(X,H)
+        GOTO 10
+END
+
+SUBROUTINE POINT5(X,H)
+!   USES THE 5 POINT FORMULA (EQUATION 1.5)
+IMPLICIT NONE
+    REAL :: VAL,SUM,F
+    REAL :: X,H
+    INTEGER :: I
+    SUM = 0
+15  DO I=-2,2
+        F = EXP(X+I*H)
+        VAL = 0
+        IF (I == -2) THEN
+            VAL = F
+        ELSE IF (I == -1) THEN
+            VAL = -8.0*F
+        ELSE IF (I == 0) THEN
+            VAL = 0.0
+        ELSE IF (I == 1) THEN
+            VAL = 8.0*F
+        ELSE
+            VAL = -F
+        END IF
+        SUM = SUM + VAL/(12.0*H)
+    END DO
+    PRINT *,'5-POINT METHOD YIELDS:',SUM
+END SUBROUTINE POINT5
+
+SUBROUTINE SYMMETRIC(X,H)
+!   USES THE TWO POINT FORMUAL (EQUATION 1.3B)
+IMPLICIT NONE
+    REAL :: VAL
+    REAL :: X,H
+    REAL :: F
+    INTEGER :: I
+        VAL = (EXP(X+H)-EXP(X-H))/(2.*H)
+    PRINT*,'SYMMETRIC METHOD YIELDS: ',VAL
+    PRINT*,''
+END SUBROUTINE SYMMETRIC

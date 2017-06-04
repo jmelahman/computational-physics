@@ -1,0 +1,39 @@
+program exercise1_6
+!   Uses the Newton Raphson method to find the root of tanh(x)
+implicit none
+    real :: x,tolx
+    tolx = 1.E-06               !tolerance for finding root
+    x = 2.                      !intitial guess
+    call NewtonRaphson(x,tolx)
+end program
+
+subroutine NewtonRaphson(x,tolx)
+implicit none
+    real :: x,tolx,func,fprime
+    integer :: i
+
+    i = 0
+10  continue
+    i = i+1
+    x = x-func(x)/fprime(x)
+    print *,'x',x
+    print*,func(x)
+    if (abs(func(x)) > tolx) goto 10
+    print *,'Number of iterations',i
+    print *,"The root is approixately",x
+    return
+end subroutine NewtonRaphson
+
+function func(X)
+    implicit none
+    real :: func,X
+    func = tan(X)
+    return
+end function func
+
+function fprime(X)
+    implicit none
+    real :: fprime,X
+    fprime = (4*cos(X)*cos(X))/(1+cos(2*X))**2
+    return
+end function fprime

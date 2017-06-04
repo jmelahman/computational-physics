@@ -1,0 +1,118 @@
+PROGRAM EXERCISE5_4
+IMPLICIT NONE
+    REAL,PARAMETER :: PI=4.*ATAN(1.)
+    REAL,DIMENSION(:,:),ALLOCATABLE :: A
+    REAL :: P
+    REAL :: POLD
+    REAL :: LAMDAMAX
+    REAL :: LAMDAMIN
+    REAL :: LAMDA
+    REAL :: DL
+    REAL :: TOLP
+    INTEGER :: N
+    INTEGER :: M
+    INTEGER :: EL
+    INTEGER :: ROW
+    INTEGER :: COL
+    N=14000
+    DL=.01/N
+    TOLP=.0000001
+    LAMDA=0.0
+    PRINT *,"MATRIX OF SIZE",N
+    PRINT *,'EXACT EIGENVALUES'
+    DO M=1,N
+        PRINT *,-4.*SIN(M*PI/(2.*(N+1)))**2
+    END DO
+    ALLOCATE(A(N,N))
+    DO COL=1,N
+        DO ROW=1,N
+            IF(ROW == COL)THEN
+                A(ROW,COL)=-2.
+            ELSE IF(ROW==COL-1 .OR. ROW==COL+1)THEN
+                A(ROW,COL)=1.
+            ELSE
+                A(ROW,COL)=0
+            END IF
+        END DO
+    END DO
+    CALL FINDLAMDAX(A,N,LAMDAMAX,LAMDAMIN)
+    LAMDA=LAMDAMAX
+    PRINT *,'ESTIMATED EIGENVALUES'
+10  CONTINUE
+    CALL SOLVEP(A,N,LAMDA,P,EL)
+    POLD=P
+    DO WHILE(DL > TOLP)
+        LAMDA=LAMDA-DL
+        CALL SOLVEP(A,N,LAMDA,P,EL)
+        IF(P*POLD < 0.0)THEN
+            LAMDA=LAMDA+DL
+            DL=DL/2.
+        END IF
+    END DO
+    PRINT*,LAMDA
+    IF(EL>0)THEN
+        DL=.01/N
+        LAMDA=LAMDA-DL
+        GOTO 10
+    END IF
+    DEALLOCATE(A)
+END PROGRAM
+
+SUBROUTINE FINDLAMDAX(A,N,LAMDAMAX,LAMDAMIN)
+IMPLICIT NONE
+    REAL,DIMENSION(N,N) :: A
+    REAL :: LAMDAMAX
+    REAL :: LAMDAMIN
+    REAL :: LAMDAMAXNEW
+    REAL :: LAMDAMINNEW
+    INTEGER :: N
+    INTEGER :: M
+    INTEGER :: ROW,COL
+    LAMDAMAX=0.0
+    LAMDAMIN=0.0
+    DO M=1,N
+        LAMDAMINNEW=A(M,M)
+        LAMDAMAXNEW=A(M,M)
+        DO COL=1,N
+            IF(COL .NE. M)THEN
+                LAMDAMINNEW=LAMDAMINNEW-ABS(A(M,COL))
+                LAMDAMAXNEW=LAMDAMAXNEW+ABS(A(M,COL))
+            END IF
+        END DO
+        IF(LAMDAMAXNEW > LAMDAMAX)THEN
+            LAMDAMAX=LAMDAMAXNEW
+        END IF
+        IF(LAMDAMINNEW < LAMDAMIN)THEN
+            LAMDAMIN=LAMDAMINNEW
+        END IF
+    END DO
+    RETURN
+END SUBROUTINE
+
+SUBROUTINE SOLVEP(A,N,LAMDA,P,TCS)
+IMPLICIT NONE
+    REAL,DIMENSION(N,N) :: A
+    REAL :: P
+    REAL :: PM,PMM
+    REAL :: LAMDA
+    INTEGER :: N
+    INTEGER :: M
+    INTEGER :: TCS
+    TCS=0
+    DO M=1,N
+        IF(M==1)THEN
+            P=A(M,M)-LAMDA
+            PM=1
+        ELSE IF(M==2)THEN
+            P=(A(M,M)-LAMDA)*PM-A(M-1,M)**2
+        ELSE
+            P=(A(M,M)-LAMDA)*PM-A(M,M-1)**2*PMM
+        END IF
+        PMM=PM
+        IF(P*PM < 0.0)THEN
+            TCS=TCS+1
+        END IF
+        PM=P
+    END DO
+    RETURN
+END SUBROUTINE

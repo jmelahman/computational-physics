@@ -1,0 +1,96 @@
+program exercise1_2
+!calculates the integral for 4*X**3+X**2-4
+implicit none
+    real :: exact
+    real :: h               !step size
+    real :: lb,ub           !lower and upper bound
+    integer :: N            !number of steps
+
+10  print *,'Enter the lower bound'
+    read *,lb
+    print *,'Enter the upper bound'
+    read *,ub
+    exact = ub**4+ub**3/3-4*ub-(lb**4+lb**3/3-4*lb)
+11  print *,'Enter the value of N (must be multiple of 4)'
+    read *,N
+    if (mod(N,4) > 0) goto 11
+
+    h = sqrt(ub-lb)/N
+    print *,'The value of h is ',h
+    print *,'the exact value is',exact
+    call simpson(lb,N,h)
+    call boole(lb,N,h)
+    call durand(lb,N,h)
+end program
+
+
+subroutine simpson(lb,N,h)
+!   Uses Simpson's Rule (equation 1.12)
+implicit none
+    real :: sum,val,h,f
+    real :: lb,u
+    integer :: N,i
+    sum = 0
+    do i=0,N
+        u = lb+i*h
+        f = 4*u**3+u**2-4
+        val = 0
+        if (i == 0 .OR. i == N) then
+            val = h*f/3.0
+        else if (mod(i,2) /= 0) then
+            val = 2.0*h*f/3.0
+        else
+            val = 4.0*h*f/3.0
+        end if
+        sum = sum + val
+    end do
+    print *,"Simpson's method yields:",sum
+end subroutine simpson
+
+subroutine boole(lb,N,h)
+!   Uses Boole's Rule (also called Bode's Equation, equation 1.13b)
+implicit none
+    real :: val,h,f,sum
+    real :: lb,u
+    integer :: N,i
+    sum = 0
+    do i=0,N
+        u = lb+i*h
+        f = 4*u**3+u**2-4
+        val = 0
+        if (i == 0 .OR. i == N) then
+            val = 14.0*h*f/45.0
+        else if (mod(i,2) == 1) then
+            val = 64.0*h*f/45.0
+        else if (mod(i,4) == 2) then
+            val = 24.0*h*f/45.0
+        else
+            val = 28.0*h*f/45.0
+        end if
+        sum = sum + val
+    end do
+    print *,"Boole's method yields:",sum
+end subroutine boole
+
+subroutine durand(lb,N,h)
+!   Uses a Newton-Cotes Formula called Durand's Rule
+implicit none
+    real :: val,h,f,sum
+    real :: lb,u
+    integer :: N,i
+    sum = 0
+    do i=0,N
+        u = lb+i*h
+        f = 4*u**3+u**2-4
+        val = 0
+        if (i == 0 .OR. i == N) then
+            val = 2.0*h*f/5.0
+        else if (i == 1 .OR. i == N-1) then
+            val = 11.0*h*f/12.0
+        else
+            val = h*f
+        end if
+    sum = sum + val
+    end do
+    print *,"Durand's Method yields:",sum
+end subroutine durand

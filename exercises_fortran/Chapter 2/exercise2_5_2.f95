@@ -1,0 +1,72 @@
+PROGRAM EXERCISE2
+!MODELS SHM WITH DY/DY=P AND
+!DP/DT = -4YPI^2 WITH AN INITIAL VALUE OF
+!P(0)=-1 & Y(0)=1 USING 100000 STEPS
+!Y(T) = COS(2PI*T)-SIN(2PI*T)
+!P(T) = -2PI*(SIN(2PI*T)+COS(2PI*T))
+IMPLICIT NONE
+    REAL :: Y,P,T
+    REAL :: PI = 4.0*ATAN(1.0)
+
+10  PRINT *,'ENTER A VALUE OF T'
+    READ *,T
+    P = -1.0
+    Y = 1.0
+
+    PRINT *,'Y(T) =',COS(2.0*PI*T)-SIN(2.0*PI*T)/(2.0*PI)
+    PRINT *,'P(T) =',-2.0*PI*SIN(2.0*PI*T)-COS(2.0*PI*T)
+    CALL RUNGEKUTTA4(Y,P,T)
+
+    GOTO 10
+END PROGRAM
+
+SUBROUTINE RUNGEKUTTA4(Y,P,T)
+IMPLICIT NONE
+    REAL :: P,Y
+    REAL :: T,H
+    REAL :: KY1,KY2,KY3,KY4
+    REAL :: KP1,KP2,KP3,KP4
+    REAL :: DP,DY
+    INTEGER :: I
+
+    H = T/1000000.0
+
+    DO I=0,999999
+        CALL INTDT(Y,P,DY,DP)
+        KP1 = H*DP
+        KY1 = H*DY
+
+        CALL INTDT(Y+KY1/2.0,P+KP1/2.0,DY,DP)
+        KP2 = H*DP
+        KY2 = H*DY
+
+        CALL INTDT(Y+KY2/2.0,P+KP2/2.0,DY,DP)
+        KP3 = H*DP
+        KY3 = H*DY
+
+        CALL INTDT(Y+KY3,P+KP3,DY,DP)
+        KP4 = H*DP
+        KY4 = H*DY
+
+        Y = Y+(KY1+2.0*KY2+2.0*KY3+KY4)/6.0
+        P = P+(KP1+2.0*KP2+2.0*KP3+KP4)/6.0
+    END DO
+
+    PRINT *,'Y4 = ',Y
+    PRINT *,'P4 = ',P
+    RETURN
+END SUBROUTINE
+
+SUBROUTINE INTDT(Y,P,DY,DP)
+IMPLICIT NONE
+    REAL :: P
+    REAL :: Y
+    REAL :: DY
+    REAL :: DP
+    REAL :: PI = 4.0*ATAN(1.0)
+
+    DP = -4.0*PI*PI*Y
+    DY = P
+
+    RETURN
+END SUBROUTINE

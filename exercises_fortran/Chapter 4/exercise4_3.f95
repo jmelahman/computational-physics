@@ -1,0 +1,76 @@
+PROGRAM EXERCISE4_3
+IMPLICIT NONE
+    REAL :: X
+    INTEGER :: LMAX
+!
+10  PRINT *,'ENTER L'
+    READ *,LMAX
+    PRINT *,'ENTER X'
+    READ *,X
+    PRINT *,'EXPLICIT VALUES OF N'
+    PRINT *,0,-COS(X)/X
+    PRINT *,1,-COS(X)/X/X-SIN(X)/X
+    PRINT *,2,COS(X)*(-3./X**3+1./X)-3.*SIN(X)/X/X
+    PRINT *,'FORWARD VALUES OF N'
+    CALL NFORWARD(LMAX,X)
+    PRINT *,'EXPLICIT VALUES OF J'
+    PRINT *,0,SIN(X)/X
+    PRINT *,1,SIN(X)/X/X-COS(X)/X
+    PRINT *,2,SIN(X)*(3./X**3-1./X)-3.*COS(X)/X/X
+    PRINT *,'FORWARD VALUES OF J'
+    CALL JFORWARD(LMAX,X)
+    PRINT *,'BACKWARD VALUES OF J'
+    CALL JBACKWARD(LMAX,X)
+    GOTO 10
+END PROGRAM
+
+SUBROUTINE NFORWARD(LMAX,X)
+IMPLICIT NONE
+    REAL :: N(0:50)
+    REAL :: X
+    INTEGER :: L
+    INTEGER :: LMAX
+    N(0)=-COS(X)/X
+    N(1)=-COS(X)/X/X-SIN(X)/X
+    DO L=1,LMAX-1
+        N(L+1)=N(L)*(2*L+1)/X-N(L-1)
+    END DO
+    DO L=0,LMAX
+        PRINT *,L,N(L)
+    END DO
+END SUBROUTINE
+
+SUBROUTINE JFORWARD(LMAX,X)
+IMPLICIT NONE
+    REAL :: J(0:50)
+    REAL :: X
+    INTEGER :: L
+    INTEGER :: LMAX
+    J(0)=SIN(X)/X
+    J(1)=SIN(X)/X/X-COS(X)/X
+    DO L=1,LMAX-1
+        J(L+1)=J(L)*(2*L+1)/X-J(L-1)
+    END DO
+    DO L=0,LMAX
+        PRINT *,L,J(L)
+    END DO
+END SUBROUTINE
+
+SUBROUTINE JBACKWARD(LMAX,X)
+IMPLICIT NONE
+    REAL :: J(0:50)
+    REAL :: X
+    REAL :: NORM
+    INTEGER :: L
+    INTEGER :: LMAX
+    J(LMAX)=0
+    J(LMAX-1)=1E-20
+    DO L=LMAX-1,1,-1
+        J(L-1)=(2*L+1)*J(L)/X-J(L+1)
+    END DO
+    NORM=SIN(X)/X/J(0)
+    DO L=0,LMAX
+        J(L)=NORM*J(L)
+        PRINT *,L,J(L)
+    END DO
+END SUBROUTINE
