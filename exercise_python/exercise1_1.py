@@ -1,10 +1,5 @@
 """
-Exercise  1.1: Using any function for which you can evalute the derivatives
-analytically, investigate the accuracy of the formulas in Table 1.2 for various
-values of h.
-
-The function of choice is exp(x)/x whose derivative is exactly:
-exp(x)(x-1)/x^2. To use a different equation, simply alter myFunction.
+Exercise  1.2: 
 
 Computational Physics: FORTRAN Version
 by Steven E. Koonin and Dawn C. Meredith
