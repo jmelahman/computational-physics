@@ -23,10 +23,10 @@ IMPLICIT NONE
 !	MAKE SURE THAT THE BOTTOM OF THE WELL IS NORMALIZED TO -1 AND
 !	XMIN OCCURS AT THE MINIMUM OF POT(X).
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-50	E = -1.
+50	E = -1.0
 !	XMIN = 2.**(1./6.)
 !	XMIN = 0
-	XMIN = .74166
+	XMIN = 0.74166
 !	BETA = 1.25231934
 	BETA = 1.40698099
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
