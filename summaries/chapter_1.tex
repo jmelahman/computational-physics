@@ -1,0 +1,152 @@
+\documentclass[10pt]{article}
+\usepackage[total={6in,9.25in}]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{caption}
+\usepackage[framed,numbered]{mcode}
+\lstset{language=Python}
+\author{Jamison Lahman}
+\title{Computational Physics: Chapter 1}
+\begin{document}
+
+\begin{flushright}Jamison Lahman (\href{mailto:lahmanja@gmail.com}{lahmanja@gmail.com}) \\
+\href{https://www.amazon.com/Computational-Physics-Fortran-Steven-Koonin/dp/0201386232}{Computational Physics: FORTRAN Version} \\
+by Steven E. Koonin and Dawn C. Meredith\\
+Chapter 01 Exercises | July 7th, 2018 \\
+\end{flushright}
+\textbf{Exercise 1.1:} Using any function for which you can evaluate the derivatives analytically, investigate the accuracy of the formulas in the Table 1\footnote{Table 1.2 from \href{https://www.amazon.com/Computational-Physics-Fortran-Steven-Koonin/dp/0201386232}{Computational Physics: FORTRAN Version}} for various values of \textit{h}. \\
+\\
+\textbf{Summary:} To approximate the derivative numerically, we will utilize five equations based off the Maclaurin Series. The Maclaurin Series of function, \textit{f(x)}, is given by the equation,
+\begin{equation}
+f(x) = f_0 +x f_0'+ \frac{x^2f_0''}{2!} + \frac{x^nf_0^n}{n!}.
+\end{equation}
+Solving the above equation for \textit{f'} yields,
+\begin{equation}
+f_0' = \frac{f(x)-f_0}{x}+\frac{-1}{x}\left(\frac{x^2f_0''}{2!} \right)+ \frac{-1}{x} \left(\frac{x^nf_0^n}{n!}\right) =  \frac{f(x)-f_0}{x}  + \mathcal{O}(h)
+\end{equation}
+This gives the first of the '2-point' methods as this assumes the function is accurately described by a linear function over the interval $(0,h)$
+\begin{equation}
+\label{eq:forward2}
+f'(x) \approx \frac{f_{(x+h)}-f_x}{h}.
+\end{equation}
+\begin{equation}
+\label{eq:backward2}
+f'(x) \approx \frac{f_{x}-f_{(x-h)}}{h}
+\end{equation}
+is found similarly and assumes the function is accurately described by a linear function over the interval $(-h,0)$. The third equation, the symmetric "3-point" formula is the quadratic polynomial interpolation of the function over the two previous regions. The 3-point equation is found by taking the average of Eq. \ref{eq:forward2} and \ref{eq:backward2},
+\begin{equation}
+\label{eq:symmetric3}
+f'=\frac{f_{(x+h)}-f_{(x-h)}}{2h} + \mathcal{O}(2^4) \approx \frac{f_1-f_{-1}}{2h}.
+\end{equation} 
+
+The final two equations, the "4-point" and "5-point" formulas, are similarly found and include more interactions fowards and backwards to create higher-order approximations of the function over the given interval. They, along with their higher-order derivatives, are given in Table \ref{tab:differentiation}. The 5-point formula is the five-point stencil in one-dimension. \\
+\begin{table}[!h]
+	% Center the table
+	\begin{center}
+    % Title of the table
+	\caption{4- and 5-point difference formulas for derivatives}
+		\label{tab:differentiation}
+		\begin{tabular}{ccc}
+		% To create a horizontal line, type \hline
+		\hline
+		& 4-point & 5-point \\
+		\hline
+		$hf'$ & $\pm\frac{1}{6}(-2f_{\mp1} - 3f_{0} + 6f_{\pm 1} - f_{\pm 2})$ & $\frac{1}{12}(f_{-2} - 8f_{-1} + 8f_{1} -f_{2})$ \\
+		$h^{2}f'' $ & $f_{-1} - 2f_{0} + f_{1}$ & $\frac{1}{12}(-f_{-2}+16f_{-1} - 30 f_{0} +16f_{1} -f_{2})$ \\
+		$h^{3}f'''$ & $\pm(-f_{\mp 1} + 3 f_{0} - 3 f_{\pm 1} + f_{\pm 2 })$ & $\frac{1}{2}(-f_{-2} + 2f_{-1} - 2f_{1} + f_{2})$ \\
+		$h^{4}f^{iv)} $ & ... & $f_{-2} - 4 f_{-1} + 6 f_{0} -4f_{1} + f_{2}$
+		\end{tabular}
+	\end{center}
+\end{table} \\
+\textbf{Solution:} The function we will approximating the derivative numerically is,
+\[
+F(x) = \sin(x).
+\]
+The analytical derivative of the sine function is known to be,
+\[
+\frac{d \sin(x)}{dx} = \cos(x).
+\]
+For a formal proof of the derivation, see \href{https://en.wikipedia.org/wiki/Differentiation_of_trigonometric_functions#Derivative_of_the_sine_function}{Wikipedia - derivative of the sine function}. The exact value of the derivative at $x=1$ (up to six decimal points) is $0.540302$. Table \ref{tab:diff_errors} shows the accuracy of the formulas above for various values of \textit{h}. \\
+
+\begin{table}[!ht]
+	% Center the table
+	\begin{center}
+    % Title of the table
+	\caption{Error in evaluating the $d \sin /dx|_{x=1}=0.540302$}
+		\label{tab:diff_errors}
+		\begin{tabular}{cccccc}
+		% To create a horizontal line, type \hline
+		\hline
+		h & Fwd 2-point Eq. \ref{eq:forward2} & Bkwd 2-point Eq. \ref{eq:backward2} & 3-point Eq. \ref{eq:symmetric3} & 4-point Tab. \ref{tab:differentiation} & 5-point Tab. \ref{tab:differentiation} \\
+		\hline
+0.50000&-0.228254&0.183789&-0.022233&-0.009499&-0.001093\\ 
+0.20000&-0.087462&0.080272&-0.003595&-0.000586&-0.000029\\ 
+0.10000&-0.042939&0.041138&-0.000900&-0.000072&-0.000002\\ 
+0.05000&-0.021257&0.020807&-0.000225&-0.000009&-0.000000\\ 
+0.02000&-0.008450&0.008378&-0.000036&-0.000001&-0.000000\\ 
+0.01000&-0.004216&0.004198&-0.000009&-0.000000&-0.000000\\ 
+0.00500&-0.002106&0.002101&-0.000002&-0.000000&-0.000000\\ 
+0.00200&-0.000842&0.000841&-0.000000&-0.000000&-0.000000\\ 
+0.00100&-0.000421&0.000421&-0.000000&-0.000000&-0.000000\\ 
+0.00050&-0.000210&0.000210&-0.000000&-0.000000&-0.000000\\ 
+0.00020&-0.000084&0.000084&-0.000000&-0.000000&-0.000000\\ 
+0.00010&-0.000042&0.000042&-0.000000&0.000000&0.000000\\ 
+0.00005&-0.000021&0.000021&-0.000000&0.000000&0.000000\\ 
+0.00002&-0.000008&0.000008&-0.000000&-0.000000&0.000000\\ 
+0.00001&-0.000004&0.000004&-0.000000&-0.000000&-0.000000\\ 
+\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+\newpage
+Python interpretations of the formulas from above\footnote{For the full python script responsible for Table \ref{tab:diff_errors}, see my \href{https://github.com/jmelahman/computational-physics-solutions/blob/master/exercise_python/exercise1_1.py}{GitHub}},
+\begin{lstlisting}
+def forward2(x,h):
+#Performs the forward 2-point method on the function defined by myFunc
+#Input:  x -- independent variable
+#        h -- step-size
+#Output: ans -- dependent variable
+    ans = (myFunc(x)-myFunc(x-h))/h
+    return(ans)
+
+def backward2(x,h):
+#Performs the backward 2-point method on the function defined by myFunc
+#Input:  x -- independent variable
+#        h -- step-size
+#Output: ans -- dependent variable
+    ans = (myFunc(x+h)-myFunc(x))/h
+    return(ans)
+
+def symmetric3(x,h):
+#Performs the symmetric 3-point method on the function defined by myFunc
+#Input:  x -- independent variable
+#        h -- step-size
+#Output: ans -- dependent variable
+    ans = (myFunc(x+h)-myFunc(x-h))/(2*h)
+    return(ans)
+
+def symmetric4(x,h):
+#Performs the symmetric 4-point method on the function defined by myFunc
+#Input:  x -- independent variable
+#        h -- step-size
+#Output: ans -- dependent variable
+    ans = (-2*myFunc(x-h)-3*myFunc(x)+6*myFunc(x+h)-myFunc(x+2*h))/(6*h)
+    return(ans)
+
+def symmetric5(x,h):
+#Performs the symmetric 5-point method on the function defined by myFunc
+#Input:  x -- independent variable
+#        h -- step-size
+#Output: ans -- dependent variable
+    ans = (myFunc(x-2*h)-8*myFunc(x-h)+8*myFunc(x+h)-myFunc(x+2*h))/(12*h)
+    return(ans)
+\end{lstlisting}
+\textbf{Exercise 1.2:} Using any function whose definite integral you can compute analytically, investigate the accuracy of various quadrature methods for various values of \textit{h}. \\
+\\
+\textbf{Summary:}
+\end{document}
