@@ -8,13 +8,6 @@ Solution by Jamison Lahman, June 3, 2017
 """
 import math
 
-def myFunction(x):
-#This is the function which is to be evaluated.
-#Input:  x -- independent variable
-#Output: y -- dependent variable
-    y = math.sin(x)   # y = e^x/x
-    return(y)
-
 def backward2(x,h):
 #Performs the backward 2-point method on the function defined by myFunction
 #Input:  x -- independent variable
@@ -56,21 +49,48 @@ def symmetric5(x,h):
     return(ans)
 
 ##########################################################################################
-#Initializes the constants
-val = 1
-h = [.5,.2,.1,.05,.02,.01,.005,.002,.001,.0005,.0002,.0001,.00005,.00002,.00001]
-exact = math.cos(val)
-#Opens file to output
-fout = open('exercise1_1.txt', 'w')
 
-for i in range(len(h)):
-	#Evaluates the error for each method
-    error1 = backward2(val,h[i]) - exact
-    error2 = forward2(val,h[i]) - exact
-    error3 = symmetric3(val,h[i]) - exact
-    error4 = symmetric4(val,h[i]) - exact
-    error5 = symmetric5(val,h[i]) - exact
-	#Outputs in a format compatible with LaTex tabular :)
-    fout.write(''.join( ('%.5f'%h[i],'&','%.6f'%error1,'&','%.6f'%error2,'&','%.6f'%error3,'&','%.6f'%error4,'&','%.6f'%error5,'\\\ \n') ))
+input_val = input('Enter the value of x: ')
+try:
+    val = float(input_val)              #Ensures a float is entered
+except:
+    print('Input was not a float.')
+    exit()
+
+input_h = input('Enter the value of h: ')
+try:
+    h = float(input_h)                  #Ensures a float is entered
+except:
+    print('Input was not a float.')
+    exit()
+
+#Outputs available methods to screen
+print('1.Backward 2-point\n2.Forward 2-point\n3.Symmetric 3-point\n4.Symmetric 4-point\n5.Symmetric 5-point')
+
+input_method = input('Which method would you like to use: ')
+try:
+    method = float(input_method)        #Ensures a float is entered
+except:
+    print('Invalid method.')
+    exit()
     
-fout.close()
+if method == 1:                         #calls appropiate function
+    ans = backward2(val,h)
+elif method == 2:
+    ans = forward2(val,h)
+elif method == 3:
+    ans = symmetric3(val,h)
+elif method == 4:
+    ans = symmetric4(val,h)
+elif method == 5:
+    ans = symmetric5(val,h)
+else:
+    print('Invalid method.')
+    exit()
+    
+print(ans)                              #prints answer found above
+exact = math.exp(val)*(val-1)/val/val   # e^x(x-1)/x
+print('The exact solution is:')
+print(exact)
+print('The error is:')
+print(ans - exact)
