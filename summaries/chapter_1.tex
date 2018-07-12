@@ -19,29 +19,32 @@
 by Steven E. Koonin and Dawn C. Meredith\\
 Chapter 01 Exercises | July 7th, 2018 \\
 \end{flushright}
-\textbf{Exercise 1.1:} Using any function for which you can evaluate the derivatives analytically, investigate the accuracy of the formulas in the Table 1\footnote{Table 1.2 from \href{https://www.amazon.com/Computational-Physics-Fortran-Steven-Koonin/dp/0201386232}{Computational Physics: FORTRAN Version}} for various values of \textit{h}. \\
+\textbf{Exercise 1.1:} Using any function for which you can evaluate the derivatives analytically, investigate the accuracy of the formulas in Table 1\footnote{Table 1.2 from \href{https://www.amazon.com/Computational-Physics-Fortran-Steven-Koonin/dp/0201386232}{Computational Physics: FORTRAN Version}} for various values of \textit{h}. \\
 \\
 \textbf{Summary:} To approximate the derivative numerically, we will utilize five equations based off the Maclaurin Series. The Maclaurin Series of function, \textit{f(x)}, is given by the equation,
 \begin{equation}
-f(x) = f_0 +x f_0'+ \frac{x^2f_0''}{2!} + \frac{x^nf_0^n}{n!}.
+f(x) = f_0 +x f_0'+ \frac{x^2f_0''}{2!} + \frac{x^nf_0^(n)}{n!}.
 \end{equation}
 Solving the above equation for \textit{f'} yields,
 \begin{equation}
-f_0' = \frac{f(x)-f_0}{x}+\frac{-1}{x}\left(\frac{x^2f_0''}{2!} \right)+ \frac{-1}{x} \left(\frac{x^nf_0^n}{n!}\right) =  \frac{f(x)-f_0}{x}  + \mathcal{O}(h)
+f_0' = \frac{f(x)-f_0}{x}+\frac{-1}{x}\left(\frac{x^2f_0''}{2!} \right)+ \frac{-1}{x} \left(\frac{x^nf_0^{(n)}}{n!}\right) =  \frac{f(x)-f_0}{x}  + \mathcal{O}(x).
 \end{equation}
-This gives the first of the '2-point' methods as this assumes the function is accurately described by a linear function over the interval $(0,h)$
+The above equation assumes the function is accurately described by a linear function over the interval $(0,h)$. This gives the first of the '2-point' methods, 
 \begin{equation}
 \label{eq:forward2}
-f'(x) \approx \frac{f_{(x+h)}-f_x}{h}.
+f'(x) \approx \frac{f(x+h)-f(x)}{h},
 \end{equation}
+where \textit{x} is the value where the derivative is being evaluated and \textit{h} is the step size used. Using the same method as above but using a previous point produces the equation,
 \begin{equation}
 \label{eq:backward2}
-f'(x) \approx \frac{f_{x}-f_{(x-h)}}{h}
+f'(x) \approx \frac{f(x)-f(x-h)}{h}
 \end{equation}
-is found similarly and assumes the function is accurately described by a linear function over the interval $(-h,0)$. The third equation, the symmetric "3-point" formula is the quadratic polynomial interpolation of the function over the two previous regions. The 3-point equation is found by taking the average of Eq. \ref{eq:forward2} and \ref{eq:backward2},
+assumes the function is accurately described by a linear function over the interval $(-h,0)$. Notice each of these equations are accurate up to one order of \textit{h}. 
+
+We can improve the accuracy by including more terms. Using the immediate values forwards and backwards allows for the terms with even-powered values of \textit{h} to cancel out. Eq \ref{eq:symmetric3} is the quadratic polynomial interpolation of the function over the two previous regions,
 \begin{equation}
 \label{eq:symmetric3}
-f'=\frac{f_{(x+h)}-f_{(x-h)}}{2h} + \mathcal{O}(2^4) \approx \frac{f_1-f_{-1}}{2h}.
+f'=\frac{f(x+h)-f(x-h)}{2h} + \mathcal{O}(h^2) \approx \frac{f(x+h)-f(x-h)}{2h}.
 \end{equation} 
 
 The final two equations, the "4-point" and "5-point" formulas, are similarly found and include more interactions fowards and backwards to create higher-order approximations of the function over the given interval. They, along with their higher-order derivatives, are given in Table \ref{tab:differentiation}. The 5-point formula is the five-point stencil in one-dimension. \\
@@ -103,8 +106,8 @@ For a formal proof of the derivation, see \href{https://en.wikipedia.org/wiki/Di
 		\end{tabular}
 	\end{center}
 \end{table}
-\newpage
-Python interpretations of the formulas from above\footnote{For the full python script responsible for Table \ref{tab:diff_errors}, see my \href{https://github.com/jmelahman/computational-physics-solutions/blob/master/exercise_python/exercise1_1.py}{GitHub}},
+Python interpretations of the formulas from above\footnote{For the full python script responsible for Table \ref{tab:diff_errors}, see my \href{https://github.com/jmelahman/computational-physics-solutions/blob/master/exercises_python/exercise1_1.py}{GitHub}.},
+
 \begin{lstlisting}
 def forward2(x,h):
 #Performs the forward 2-point method on the function defined by myFunc
@@ -113,7 +116,9 @@ def forward2(x,h):
 #Output: ans -- dependent variable
     ans = (myFunc(x)-myFunc(x-h))/h
     return(ans)
+\end{lstlisting}
 
+\begin{lstlisting}
 def backward2(x,h):
 #Performs the backward 2-point method on the function defined by myFunc
 #Input:  x -- independent variable
@@ -121,7 +126,8 @@ def backward2(x,h):
 #Output: ans -- dependent variable
     ans = (myFunc(x+h)-myFunc(x))/h
     return(ans)
-
+\end{lstlisting}
+\begin{lstlisting}
 def symmetric3(x,h):
 #Performs the symmetric 3-point method on the function defined by myFunc
 #Input:  x -- independent variable
@@ -129,7 +135,8 @@ def symmetric3(x,h):
 #Output: ans -- dependent variable
     ans = (myFunc(x+h)-myFunc(x-h))/(2*h)
     return(ans)
-
+\end{lstlisting}
+\begin{lstlisting}
 def symmetric4(x,h):
 #Performs the symmetric 4-point method on the function defined by myFunc
 #Input:  x -- independent variable
@@ -137,7 +144,8 @@ def symmetric4(x,h):
 #Output: ans -- dependent variable
     ans = (-2*myFunc(x-h)-3*myFunc(x)+6*myFunc(x+h)-myFunc(x+2*h))/(6*h)
     return(ans)
-
+\end{lstlisting}
+\begin{lstlisting}
 def symmetric5(x,h):
 #Performs the symmetric 5-point method on the function defined by myFunc
 #Input:  x -- independent variable
@@ -146,6 +154,8 @@ def symmetric5(x,h):
     ans = (myFunc(x-2*h)-8*myFunc(x-h)+8*myFunc(x+h)-myFunc(x+2*h))/(12*h)
     return(ans)
 \end{lstlisting}
+\newpage
+\noindent
 \textbf{Exercise 1.2:} Using any function whose definite integral you can compute analytically, investigate the accuracy of various quadrature methods for various values of \textit{h}. \\
 \\
 \textbf{Summary:}

@@ -16,13 +16,13 @@ IMPLICIT NONE
     IF (MOD(N,4) > 0) GOTO 11
 
     H = SQRT(UB-LB)/N
+!Jamison: I am not sure this was intended to be sqrt(UB-LB)
     PRINT *,'THE VALUE OF H IS ',H
     PRINT *,'THE EXACT VALUE IS',EXACT
     CALL SIMPSON(LB,N,H)
     CALL BOOLE(LB,N,H)
     CALL DURAND(LB,N,H)
 END PROGRAM
-
 
 SUBROUTINE SIMPSON(LB,N,H)
 !   USES SIMPSON'S RULE (EQUATION 1.12)
