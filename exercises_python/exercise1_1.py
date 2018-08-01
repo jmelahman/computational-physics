@@ -1,5 +1,5 @@
 """
-Exercise  1.2: 
+Exercise  1.1: 
 
 Computational Physics: FORTRAN Version
 by Steven E. Koonin and Dawn C. Meredith
@@ -56,12 +56,14 @@ def symmetric5(x,h):
     return(ans)
 
 ##########################################################################################
+#                                    Begin main
+##########################################################################################
 #Initializes the constants
 val = 1
 h = [.5,.2,.1,.05,.02,.01,.005,.002,.001,.0005,.0002,.0001,.00005,.00002,.00001]
 exact = math.cos(val)
 #Opens file to output
-fout = open('exercise1_1.txt', 'w')
+fout = open('exercise1_1.txt', 'w+')
 
 for i in range(len(h)):
 	#Evaluates the error for each method
