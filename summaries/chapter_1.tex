@@ -23,22 +23,26 @@ Chapter 01 Exercises | July 7th, 2018 \\
 \textbf{Exercise 1.1:} Using any function for which you can evaluate the derivatives analytically, investigate the accuracy of the formulas in Table 1\footnote{Table 1.2 from \href{https://www.amazon.com/Computational-Physics-Fortran-Steven-Koonin/dp/0201386232}{Computational Physics: FORTRAN Version}} for various values of \textit{h}. \\
 \\
 \textbf{Summary:} To approximate the derivative numerically, we will utilize five equations based off the Maclaurin Series. The Maclaurin Series of function, \textit{f(x)}, is given by the equation,
+
 \begin{equation}
-	f(x) = f_0 +x f_0'+ \frac{x^2f_0''}{2!} + \frac{x^nf_0^(n)}{n!}.
+	f(x) = f_0 +x f_0'+ \frac{x^2f_0''}{2!} + \frac{x^nf_0^{n}}{n!}.
 \end{equation}
 Solving the above equation for \textit{f'} yields,
+
 \begin{equation}
 	f_0' = \frac{f(x)-f_0}{x}+\frac{-1}{x}\left(\frac{x^2f_0''}{2!} \right)+ \frac{-1}{x} \left(\frac{x^nf_0^{(n)}}{n!}\right) =  \frac{f(x)-f_0}{x}  + \mathcal{O}(x).
 \end{equation}
 The above equation assumes the function is accurately described by a linear function over the interval $(0,h)$. This gives the first of the "2-point" methods, the forward 2-point method,
+
 \begin{equation}
 \label{eq:forward2}
-	f'(x) \approx \frac{f(x+h)-f(x)}{h},
+	f'(x) \approx \frac{f(x_{k+1})-f(x_k)}{h},
 \end{equation}
 where \textit{x} is the value where the derivative is being evaluated and \textit{h} is the step size used. Using the same method as above but using a previous point produces the equation,
+
 \begin{equation}
 \label{eq:backward2}
-	f'(x) \approx \frac{f(x)-f(x-h)}{h}.
+	f'(x) \approx \frac{f(x_k)-f(x_{k-1})}{h}.
 \end{equation}
 This assumes the function is accurately described by a linear function over the interval $(-h,0)$. Notice each of these equations are accurate up to one order of \textit{h}. The following are python functions utilizing each respective 2-point method,
 \begin{lstlisting}
@@ -60,9 +64,10 @@ def backward2(x,h):
 \end{lstlisting}
     
 We can improve the accuracy by including more terms. Using the immediate values forwards and backwards allows for the terms with even-powered values of \textit{h} to cancel out. Eq \ref{eq:symmetric3} is the quadratic polynomial interpolation of the function over the two previous regions,
+
 \begin{equation}
 \label{eq:symmetric3}
-	f'=\frac{f(x+h)-f(x-h)}{2h} + \mathcal{O}(h^2).
+	f'=\frac{f(x_{k+1})-f(x_{k-1})}{2h} + \mathcal{O}(h^2).
 \end{equation} 
 Python interpration of Eq.\ref{eq:symmetric3},
 \begin{lstlisting}
@@ -96,6 +101,7 @@ The final two equations, the "4-point" and "5-point" formulas, are similarly fou
 	\end{center}
 \end{table} \\
 Python interpretation of the previous equations,
+
 \begin{lstlisting}
 def symmetric4(x,h):
 #Performs the symmetric 4-point method on the function defined by myFunc
@@ -141,33 +147,36 @@ def symmetric5(x,h):
 		0.00002&-0.000008&0.000008&-0.000000&-0.000000&0.000000\\ 
 		0.00001&-0.000004&0.000004&-0.000000&-0.000000&-0.000000\\ 
 		\hline
-		
-		\caption{The full python script responsible for Table \ref{tab:diff_errors}, see my \href{https://github.com/jmelahman/computational-physics-solutions/blob/master/exercises_python/exercise1_1.py}{GitHub}.}	
 		\end{tabular}
 	\end{center}
 \end{table}
- The function we will approximating the derivative numerically is,
+
+ 
+The function we will approximating the derivative numerically is,
+
 \[
 	F(x) = \sin(x).
 \]
 The analytical derivative of the sine function is known to be,
+
 \[
 	\frac{d \sin(x)}{dx} = \cos(x).
 \]
-For a formal proof of the derivation, see \href{https://en.wikipedia.org/wiki/Differentiation_of_trigonometric_functions#Derivative_of_the_sine_function}{Wikipedia - derivative of the sine function}. The exact value of the derivative at $x=1$ (up to six decimal points) is $0.540302$. Table \ref{tab:diff_errors} shows the accuracy of the formulas above for various values of \textit{h}. \\
+For a formal proof of the derivation, see \href{https://en.wikipedia.org/wiki/Differentiation_of_trigonometric_functions#Derivative_of_the_sine_function}{Wikipedia - derivative of the sine function}. The exact value of the derivative at $x=1$ (up to six decimal points) is $0.540302$. Table \ref{tab:diff_errors} shows the accuracy of the formulas above for various values of \textit{h}.\footnote{The full python script responsible for Table \ref{tab:diff_errors}, see my \href{https://github.com/jmelahman/computational-physics-solutions/blob/master/exercises_python/Chapter\%201/exercise1_1.py}{GitHub}.} \\
 \newpage \noindent
 \textbf{Exercise 1.2:} Using any function whose definite integral you can compute analytically, investigate the accuracy of various quadrature methods for various values of \textit{h}. \\
 \\
 \textbf{Summary:}
 To approximate the definite integral of a function over the interval [\textit{a,b}], we will employ similar methods as used previously for exercise 1.1. A simple approximation is to assume the function is linear over the entire interval (see the star-dashes in Fig.\ref{fig:interpolation}). Further accuracy can be found by splitting the interval into N number of smaller lattices which can then be approximated linearly,
+
 \[
 	N = \frac{b-a}{h},
 \]
 where \textit{h} is the width of the lattice (see the dashed lines in Fig.\ref{fig:interpolation}). The integral is then,
 
 \begin{equation}
+	\label{eq:trapezoidal}
 	\int^b_a f(x)dx = \sum^N_{k=1} \frac{h}{2}[f(x_{k-1})+f(x_k)] + \mathcal{O}(h^3) \approx T_N.
-	\label{eq:trapezoid}
 \end{equation}
 
 \begin{figure}[!h]
@@ -200,25 +209,29 @@ def trapezoidal(x,h,N):
 The behavior of the error for the trapezoid method is very much dependent on the behavior of the function over the given interval. When the function is concave up (such as the the function over the interval [\textit{a+h,b}] in Fig.\ref{fig:interpolation}), the trapezoid method will over-estimate the true value. Similarly, when the function is concave down, (such as the function over the interval [\textit{a,a+h}] in Fig.\ref{fig:interpolation}), the trapezoid method will under-estimate the true value. 
 
 Conversely, the midpoint method,
+
 \begin{equation}
-	\int^b_a f(x)dx = \sum^N_{k=1} h\cdot f\left(\frac{x_{k-1}+x_k}{2}\right) + \mathcal{O}(h^3) \approx M_N,
 	\label{eq:midpoint}
+	\int^b_a f(x)dx = \sum^N_{k=1} h\cdot f\left(\frac{x_{k-1}+x_k}{2}\right) + \mathcal{O}(h^3) \approx M_N,
 \end{equation}
 will consistently approximate in the integral in the opposite direction from the trapezoid method. Given they both error in opposite directions, they can be combined in a manner that reduces the overall error. To be exact, the errors $EM_N$ and $ET_N$ for a quadratic function are related by,
+
 \[
 	|EM_N| = \frac{1}{2}|ET_N|
 \]
-and can be easily combined in a way to completely eliminate this error.\footnote{Taken from Introduction to Numerical Methods and \textsc{matlab} Programming for Engineers by Todd Young and Martin J. Mohlenkamp} This equation is known as the Simpson's 1/3 Rule, 
+and can be easily combined in a way to completely eliminate this error.\footnote{Taken from Introduction to Numerical Methods and \textsc{matlab} Programming for Engineers by Todd Young and Martin J. Mohlenkamp} This equation is known as the Simpson's Rule, 
+
 \[
 	S_{2N} = \frac{1}{3}(2M_N + M_N).
 \]
 Note, in the equation above, S is given the subscript $_{2N}$ since the midpoint is evaluated sub interval points from the trapezoid method thus the number of intervals is twice that for either method. For evenly spaced lattices over the interval [a,b], Simpson's Rule becomes,
+
 \begin{equation}
-	S_N = \frac{h}{3}[f(a)+4f(a+h)+2f(a+2h)+...+2f(b-2h)+4f(b-h)+f(b)] + \mathcal{O}(h^5)
 	\label{eq:simpson}
+	S_N = \frac{h}{3}[f(x_k)+4f(x_{k+1})+2f(x_{k+2})+...+2f(x_{n-2})+4f(x_{n-1})+f(x_n)] + \mathcal{O}(h^5).
 \end{equation}
 
-The Python interpretation of the Simpson's Rule is,
+The Python interpretation of Simpson's Rule is,
 \begin{lstlisting}   
 def simpsons(x,h,N):
 #Performs Simpons rule (equation 1.12).
@@ -239,7 +252,20 @@ def simpsons(x,h,N):
     sum = sum*h/3.0                             #Apply leading factor
     return sum
 \end{lstlisting}
-asdf
+
+Simpson's Rule is the quadratic interpolation of the function. Similar to numerical differentiation, further accuracy can be achieved by interpolating with higher-order polynomials. The Simpson's 3/8 Rule is the cubic interpolation and is given by,
+
+\begin{equation}
+	\label{eq:simpson3/8}
+	\int^b_a f(x)dx = \frac{3h}{8}[f(x_k)+3\sum^{N-1}_{i\neq 3j} f(x_i) + 2\sum^{N/3-1}_{j=1} (f(x_{3j})+f(x_n)] + \mathcal{O}(h^5).
+\end{equation}
+Notice the Simpson's 3/8 Rule accurate to the same order of $h$ as Eq.\ref{eq:simpson} however the constant term is slightly smaller. The quartic interpolation is called Boole's Rule and is given by,
+
+\begin{equation}
+	\label{eq:boole}
+	\int^b_a f(x)dx = \frac{2h}{45}[ 7f(x_k)+32f(x_{k+1})+12f(x_{k+2})+32f(x_{n-1})+7f(x_n)] + \mathcal{O}(h^7)
+\end{equation}
+
 \begin{lstlisting}
 def booles(x,h,N):
 #Performs Bode's rule (equation 1.13b)
@@ -263,6 +289,7 @@ def booles(x,h,N):
     return sum
 \end{lstlisting}
 
+Using the functions from above, we are able to produce the values for Table \ref{tab:quad_errors}. As we expected, Boole's Rule gives the greatest accuracy with largest value of \textit{h} followed by Simpson's Rule then the Trapezoidal Method.\footnote{The full python script responsible for Table \ref{tab:diff_errors}, see my \href{https://github.com/jmelahman/computational-physics-solutions/blob/master/exercises_python/Chapter\%201/exercise1_2.py}{GitHub}.} 
 \begin{table}[!ht]
 	% Center the table
 	\begin{center}
@@ -272,7 +299,7 @@ def booles(x,h,N):
 		\begin{tabular}{|ccccc|}
 		% To create a horizontal line, type \hline
 		\hline
-		N & \textit{h} & Trapezoidal Eq. 1.9 & Simpson's Eq. 1.12 & Boole's Eq 1.13 \\
+		N & \textit{h} & Trapezoidal Eq.\ref{eq:trapezoidal} & Simpson's Eq.\ref{eq:simpson} & Boole's Eq\ref{eq:boole} \\
 		\hline
 		4.000000&0.25000&0.008940&0.000037&0.000001\\ 
 		8.000000&0.12500&0.002237&0.000002&0.000000\\ 
