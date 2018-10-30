@@ -24,8 +24,10 @@ def trapezoidal(myFunc,x,h,N):
 #Input:  x -- lower bound of the range of integration
 #        h -- step-size
 #        N -- number of lattices
-#Output: ans -- approximate integral    
-    return sum((myFunc(x+i*h) + myFunc(x+(i+1)*h)) * h / 2.0 for i in range(N))
+#Output: ans -- approximate integral
+#JL TODO: This evaluates myFunc twice at x+(i+1)*h then again at x+i_{+}*h. Could be improved 
+#to use results from previous iteration. 
+    return sum((myFunc(x+i*h)+myFunc(x+(i+1)*h))*h/2.0 for i in range(N))
      
     
 def simpsons(myFunc,x,h,N):
@@ -37,15 +39,12 @@ def simpsons(myFunc,x,h,N):
     
 #Add the contribution from the first and last points of the domain
     sum = myFunc(x) + myFunc(x+N*h)
-    for i in range(N-1):                        #N-1 ignores last point
-        j = i+1                                 #i+1 ignores first point
+    for i in range(1,N):                        #1,N ignores first and last points
 #Adds the contribution from the even placed lattice points        
-        if (j % 2 == 1):
-            sum = sum + 4.0*myFunc(x+j*h)
+        if (i%2 == 1):
+            sum = sum+4.0*myFunc(x+i*h)
 #Adds the contribution from the odd placed lattice points            
-        else:
-            sum = sum + 2.0*myFunc(x+j*h)                    
-    
+        else: sum = sum+2.0*myFunc(x+i*h)                      
     return sum*h/3.0                             #Apply leading factor
 
 def booles(myFunc,x,h,N):
@@ -56,18 +55,15 @@ def booles(myFunc,x,h,N):
 #Output: sum -- approximate integral 
 #Add the contribution from the first and last points of the domain
     sum = 7.0*(myFunc(x) + myFunc(x+N*h))
-    for i in range(N-1):                        #N-1 ignores last point
-        j = i+1                                 #i+1 ignores first point
+    for i in range(1,N):                        #1,N-1 ignores first and last points
 #Adds the contribution from the even placed lattice points        
-        if (j % 2 == 1):
-            sum = sum + 32.0*myFunc(x+j*h)
-        elif(j % 4 == 2):
-            sum = sum + 12.0*myFunc(x+j*h)
+        if (i%2 == 1):
+            sum = sum+32.0*myFunc(x+i*h)
+        elif(i%4 == 2):
+            sum = sum+12.0*myFunc(x+i*h)
 #Adds the contribution from the odd placed lattice points            
-        else:
-            sum = sum + 14.0*myFunc(x+j*h)                         
-    
-    return sum * 2.0 * h / 45.0                  #Apply leading factor
+        else: sum = sum+14.0*myFunc(x+i*h)                         
+    return sum * 2.0*h/45.0                  #Apply leading factor
 
 ######################################################################################
 #                               Begin main
@@ -86,14 +82,14 @@ fout = open('exercise1_2.txt','w+')
 for i in range(len(N)):
 
 #Step size is the range of the area of integration divided by number of lattices
-    h = (b-a) / N[i]
+    h = (b-a)/N[i]
     
     error1 = trapezoidal(myExp,a, h, N[i]) - exact
     error2 = simpsons(myExp, a, h, N[i]) - exact
     error3 = booles(myExp, a, h, N[i]) - exact
     
     #Outputs in a format compatible with LaTex tabular :)
-    fout.write(''.join( ('%f'%N[i],'&','%.5f'%h,'&','%.6f'%error1,'&','%.6f'%error2,'&','%.6f'%error3,'\\\ \n') ))
+    fout.write('{0} & {1} & {2} & {3} & {4} \n'.format(N[i],h,error1,error2,error3))
     
 fout.close()
     
