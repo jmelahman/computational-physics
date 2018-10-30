@@ -20,9 +20,9 @@
 by Steven E. Koonin and Dawn C. Meredith\\
 Chapter 01 Exercises | July 7th, 2018 \\
 \end{flushright}
-\textbf{Exercise 1.1:} Using any function for which you can evaluate the derivatives analytically, investigate the accuracy of the formulas in Table 1\footnote{Table 1.2 from \href{https://www.amazon.com/Computational-Physics-Fortran-Steven-Koonin/dp/0201386232}{Computational Physics: FORTRAN Version}} for various values of \textit{h}. \\
+\label{exercise:1.1}\textbf{Exercise 1.1:} Using any function for which you can evaluate the derivatives analytically, investigate the accuracy of the formulas in Table 1\footnote{Table 1.2 from \href{https://www.amazon.com/Computational-Physics-Fortran-Steven-Koonin/dp/0201386232}{Computational Physics: FORTRAN Version}} for various values of \textit{h}. \\
 \\
-\textbf{Summary:} To approximate the derivative numerically, we will utilize five equations based off the Maclaurin Series. The Maclaurin Series of function, \textit{f(x)}, is given by the equation,
+\label{summary:1.1}\textbf{Summary:} To approximate the derivative numerically, we will utilize five equations based off the Maclaurin Series. The Maclaurin Series of function, \textit{f(x)}, is given by the equation,
 
 \begin{equation}
 	f(x) = f_0 +x f_0'+ \frac{x^2f_0''}{2!} + \frac{x^nf_0^{n}}{n!}.
@@ -81,7 +81,7 @@ def symmetric3(x,h):
 \end{lstlisting}
 
 The final two equations, the "4-point" and "5-point" formulas, are similarly found and include more interactions fowards and backwards to create higher-order approximations of the function over the given interval. They, along with their higher-order derivatives, are given in Table \ref{tab:differentiation}. The 5-point formula is the five-point stencil in one-dimension. \\
-\begin{table}[!h]
+\begin{table}[!ht]
 	% Center the table
 	\begin{center}
     % Title of the table
@@ -119,7 +119,7 @@ def symmetric5(x,h):
     ans = (myFunc(x-2*h)-8*myFunc(x-h)+8*myFunc(x+h)-myFunc(x+2*h))/(12*h)
     return(ans)
 \end{lstlisting}
-\textbf{Solution:}
+\label{solution:1.1}\textbf{Solution:}
 \begin{table}[!ht]
 	% Center the table
 	\begin{center}
@@ -150,8 +150,6 @@ def symmetric5(x,h):
 		\end{tabular}
 	\end{center}
 \end{table}
-
- 
 The function we will approximating the derivative numerically is,
 
 \[
@@ -163,10 +161,10 @@ The analytical derivative of the sine function is known to be,
 	\frac{d \sin(x)}{dx} = \cos(x).
 \]
 For a formal proof of the derivation, see \href{https://en.wikipedia.org/wiki/Differentiation_of_trigonometric_functions#Derivative_of_the_sine_function}{Wikipedia - derivative of the sine function}. The exact value of the derivative at $x=1$ (up to six decimal points) is $0.540302$. Table \ref{tab:diff_errors} shows the accuracy of the formulas above for various values of \textit{h}.\footnote{The full python script responsible for Table \ref{tab:diff_errors}, see my \href{https://github.com/jmelahman/computational-physics-solutions/blob/master/exercises_python/Chapter\%201/exercise1_1.py}{GitHub}.} \\
-\newpage \noindent
-\textbf{Exercise 1.2:} Using any function whose definite integral you can compute analytically, investigate the accuracy of various quadrature methods for various values of \textit{h}. \\
+
+\newpage\noindent\label{exercise:1.2}\textbf{Exercise 1.2:} Using any function whose definite integral you can compute analytically, investigate the accuracy of various quadrature methods for various values of \textit{h}. \\
 \\
-\textbf{Summary:}
+\label{summary:1.2}\textbf{Summary:}
 To approximate the definite integral of a function over the interval [\textit{a,b}], we will employ similar methods as used previously for exercise 1.1. A simple approximation is to assume the function is linear over the entire interval (see the star-dashes in Fig.\ref{fig:interpolation}). Further accuracy can be found by splitting the interval into N number of smaller lattices which can then be approximated linearly,
 
 \[
@@ -179,7 +177,7 @@ where \textit{h} is the width of the lattice (see the dashed lines in Fig.\ref{f
 	\int^b_a f(x)dx = \sum^N_{k=1} \frac{h}{2}[f(x_{k-1})+f(x_k)] + \mathcal{O}(h^3) \approx T_N.
 \end{equation}
 
-\begin{figure}[!h]
+\begin{figure}[!ht]
 	% Center the figure.
     \begin{center}
 	% Include the eps file, scale it such that it's width equals the column width. You can also put width=8cm for example...
@@ -288,7 +286,7 @@ def booles(x,h,N):
     sum = sum * 2.0 * h / 45.0                  #Apply leading factor
     return sum
 \end{lstlisting}
-
+\label{solution:1.2}\textbf{Solution:}
 Using the functions from above, we are able to produce the values for Table \ref{tab:quad_errors}. As we expected, Boole's Rule gives the greatest accuracy with largest value of \textit{h} followed by Simpson's Rule then the Trapezoidal Method.\footnote{The full python script responsible for Table \ref{tab:diff_errors}, see my \href{https://github.com/jmelahman/computational-physics-solutions/blob/master/exercises_python/Chapter\%201/exercise1_2.py}{GitHub}.} 
 \begin{table}[!ht]
 	% Center the table
@@ -310,6 +308,26 @@ Using the functions from above, we are able to produce the values for Table \ref
 		\hline
 		\end{tabular}
 	\end{center}
-\end{table}
+\end{table} 
+
+\newpage\noindent
+\label{exercise:1.3}\textbf{Exercise 1.3:} Write a program to calculate
+\[
+\int^1_0 t^{-2/3}(1-t)^{-1/3}dt=2\pi /3^{1/2}
+\]
+using one of the quadrature formulas discussed above and investigate its accuracy for various values of \textit{h}. (Hint: Split the range of integration into two parts and make a different change of variable in each integral to handle the singularities.\\
+
+\noindent\textbf{Summary:} The equation above has two integrable singularities at \textit{x = 0} where $t^{-2/3}$ is undefined and one at \textit{x = 1} where $(1-t)^{-1/3}$ is undefined. As the hint suggests, the easiest method will be to split the range of integration to isolate each singularity and to perform a separate change of variable to properly approximate.
+
+First, we split the range of integration. Given,
+\[
+\int^b_a f(x)dx = \int^h_a f(x)dx + \int^b_h f(x)dx,
+\]
+we can split the integral above into,
+\begin{equation}
+\int^1_0 t^{-2/3}(1-t)^{-1/3}dt=\int_0^{0.5}t^{-2/3}(1-t)^{-1/3}dt+\int_{0.5}^1t^{-2/3}(1-t)^{-1/3}dt.
+\end{equation}
+Splitting the integral at 0.5 here was arbitrary and could have realistically been anywhere in the range at least \textit{h} from the endpoints.
+From here, we can perform a \textit{u}-substitution inside each integral to handle the singularities. For the first integrand, 
 
 \end{document}

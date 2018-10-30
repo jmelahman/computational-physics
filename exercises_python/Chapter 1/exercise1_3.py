@@ -9,6 +9,8 @@ Computational Physics: FORTRAN Version
 by Steven E. Koonin and Dawn C. Meredith
 
 Solution by Jamison Lahman, August 5, 2018
+
+TODO: u-substitution method
 """
 import math
 
@@ -17,23 +19,18 @@ def trig_sub(t):
 #Substitues t=sin^3(t) which is well-behaved over the interval of integration.
 #Input:  t -- independent variable
 #Output: y -- dependent variable
-    y = 3.*(math.cos(t)*((1.+math.sin(t))/(1.+math.sin(t)+math.sin(t)**2.)))**(1./3.)
-    return(y)
+    return (3.*(math.cos(t)*((1.+math.sin(t))/(1.+math.sin(t)+math.sin(t)**2.)))**(1./3.))
 
-
-def trapezoidal(x,h,N):
+def trapezoidal(myFunc,x,h,N):
 #Performs the trapezoidal rule (equation 1.9). The average of the function evaluated at
 #the end points of the lattice multiplied by the change in the independent variable.
 #Input:  x -- lower bound of the range of integration
 #        h -- step-size
 #        N -- number of lattices
 #Output: ans -- approximate integral    
-    sum = 0
-    for i in range(N):
-        sum = sum + (trig_sub(x+i*h)+trig_sub(x+(i+1)*h)) * h / 2.0
-    return sum 
+    return sum( (myFunc(x+i*h)+myFunc(x+(i+1)*h)) * h / 2.0 for i in range(N))
     
-def simpsons(x,h,N):
+def simpsons(myFunc,x,h,N):
 #Performs Simpons rule (equation 1.12).
 #Input:  x -- lower bound of the range of integration
 #        h -- step-size
@@ -41,45 +38,46 @@ def simpsons(x,h,N):
 #Output: sum -- approximate integral
     
 #Add the contribution from the first and last points of the domain
-    sum = trig_sub(x) + trig_sub(x+N*h)
+    sum = myFunc(x) + myFunc(x+N*h)
     for i in range(N-1):                        #N-1 ignores last point
         j = i+1                                 #i+1 ignores first point
 #Adds the contribution from the even placed lattice points        
         if (j % 2 == 1):
-            sum = sum + 4.0*trig_sub(x+j*h)
+            sum = sum + 4.0*myFunc(x+j*h)
 #Adds the contribution from the odd placed lattice points            
         else:
-            sum = sum + 2.0*trig_sub(x+j*h)                    
-    sum = sum*h/3.0                             #Apply leading factor
-    return sum
+            sum = sum + 2.0*myFunc(x+j*h)                    
+            
+    return sum * h / 3.0                             #Apply leading factor
 
-def booles(x,h,N):
+def booles(myFunc,x,h,N):
 #Performs Bode's rule (equation 1.13b)
 #Input:  x -- lower bound of the range of integration
 #        h -- step-size
 #        N -- number of lattices
 #Output: sum -- approximate integral 
 #Add the contribution from the first and last points of the domain
-    sum = 7.0*(trig_sub(x) + trig_sub(x+N*h))
+    sum = 7.0*(myFunc(x) + myFunc(x+N*h))
     for i in range(N-1):                        #N-1 ignores last point
         j = i+1                                 #i+1 ignores first point
 #Adds the contribution from the even placed lattice points        
         if (j % 2 == 1):
-            sum = sum + 32.0*trig_sub(x+j*h)
+            sum = sum + 32.0*myFunc(x+j*h)
         elif(j % 4 == 2):
-            sum = sum + 12.0*trig_sub(x+j*h)
+            sum = sum + 12.0*myFunc(x+j*h)
 #Adds the contribution from the odd placed lattice points            
         else:
-            sum = sum + 14.0*trig_sub(x+j*h)                    
-    sum = sum * 2.0 * h / 45.0                  #Apply leading factor
-    return sum
+            sum = sum + 14.0*myFunc(x+j*h)                    
 
-######################################################################################
+    return sum * 2.0 * h / 45.0                  #Apply leading factor
+
+#=====================================================================================
 #                               Begin main
-######################################################################################
+#=====================================================================================
+
 #Declaring constants
-a = 0.0                                         #lower bound
-b = math.pi/2.0                                 #upper bound
+trig_a = 0.0                                    #lower bound
+trig_b = math.pi/2.0                            #upper bound
 N = [4,8,16,32,64,128]                          #number of lattices
 
 #Exact solution is given
@@ -90,12 +88,13 @@ fout = open('exercise1_3.txt','w+')
 for i in range(len(N)):
 
 #Step size is the range of the area of integration divided by number of lattices
-    h = (b-a)/N[i]
-    error1 = trapezoidal(a, h, N[i]) - exact
-    error2 = simpsons(a, h, N[i]) - exact
-    error3 = booles(a, h, N[i]) - exact
-    #Outputs in a format compatible with LaTex tabular :)
-    fout.write(''.join( ('%f'%N[i],'&','%.5f'%h,'&','%.6f'%error1,'&','%.6f'%error2,'&','%.6f'%error3,'\\\ \n') ))
+    trig_h = (trig_b-trig_a)/N[i]
+
+    trigErrorTrap = trapezoidal(trig_sub,trig_a, trig_h, N[i]) - exact
+    trigErrorSimp = simpsons(trig_sub,trig_a, trig_h, N[i]) - exact
+    trigErrorBool = booles(trig_sub, trig_a, trig_h, N[i]) - exact
     
+    #Outputs in a format compatible with LaTex tabular :)
+    fout.write('{0} & {1} & {2} & {3} & {4} \n'.format(N[i], trig_h, trigErrorTrap, trigErrorSimp, trigErrorBool))
 fout.close()
     

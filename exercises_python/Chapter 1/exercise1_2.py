@@ -12,26 +12,23 @@ Solution by Jamison Lahman, June 11, 2018
 """
 import math
 
-def myFunc(x):
+def myExp(x):
 #This is the function which is to be evaluated.
 #Input:  x -- independent variable
 #Output: y -- dependent variable
-    y = math.exp(x)
-    return(y)
+    return math.exp(x)
 
-def trapezoidal(x,h,N):
+def trapezoidal(myFunc,x,h,N):
 #Performs the trapezoidal rule (equation 1.9). The average of the function evaluated at
 #the end points of the lattice multiplied by the change in the independent variable.
 #Input:  x -- lower bound of the range of integration
 #        h -- step-size
 #        N -- number of lattices
 #Output: ans -- approximate integral    
-    sum = 0
-    for i in range(N):
-        sum = sum + (myFunc(x+i*h)+myFunc(x+(i+1)*h)) * h / 2.0
-    return sum 
+    return sum((myFunc(x+i*h) + myFunc(x+(i+1)*h)) * h / 2.0 for i in range(N))
+     
     
-def simpsons(x,h,N):
+def simpsons(myFunc,x,h,N):
 #Performs Simpons rule (equation 1.12).
 #Input:  x -- lower bound of the range of integration
 #        h -- step-size
@@ -48,10 +45,10 @@ def simpsons(x,h,N):
 #Adds the contribution from the odd placed lattice points            
         else:
             sum = sum + 2.0*myFunc(x+j*h)                    
-    sum = sum*h/3.0                             #Apply leading factor
-    return sum
+    
+    return sum*h/3.0                             #Apply leading factor
 
-def booles(x,h,N):
+def booles(myFunc,x,h,N):
 #Performs Bode's rule (equation 1.13b)
 #Input:  x -- lower bound of the range of integration
 #        h -- step-size
@@ -68,9 +65,9 @@ def booles(x,h,N):
             sum = sum + 12.0*myFunc(x+j*h)
 #Adds the contribution from the odd placed lattice points            
         else:
-            sum = sum + 14.0*myFunc(x+j*h)                    
-    sum = sum * 2.0 * h / 45.0                  #Apply leading factor
-    return sum
+            sum = sum + 14.0*myFunc(x+j*h)                         
+    
+    return sum * 2.0 * h / 45.0                  #Apply leading factor
 
 ######################################################################################
 #                               Begin main
@@ -89,10 +86,12 @@ fout = open('exercise1_2.txt','w+')
 for i in range(len(N)):
 
 #Step size is the range of the area of integration divided by number of lattices
-    h = (b-a)/N[i]
-    error1 = trapezoidal(a, h, N[i]) - exact
-    error2 = simpsons(a, h, N[i]) - exact
-    error3 = booles(a, h, N[i]) - exact
+    h = (b-a) / N[i]
+    
+    error1 = trapezoidal(myExp,a, h, N[i]) - exact
+    error2 = simpsons(myExp, a, h, N[i]) - exact
+    error3 = booles(myExp, a, h, N[i]) - exact
+    
     #Outputs in a format compatible with LaTex tabular :)
     fout.write(''.join( ('%f'%N[i],'&','%.5f'%h,'&','%.6f'%error1,'&','%.6f'%error2,'&','%.6f'%error3,'\\\ \n') ))
     
