@@ -19,7 +19,7 @@ def trig_sub(t):
 #Substitues t=sin^3(t) which is well-behaved over the interval of integration.
 #Input:  t -- independent variable
 #Output: y -- dependent variable
-    return (3.0*(math.cos(t)*((1.0+math.sin(t))/(1.0+math.sin(t)+math.sin(t)**2)))**(1.0/3.0))
+    return(3.0*(math.cos(t)*((1.0+math.sin(t))/(1.0+math.sin(t)+math.sin(t)**2)))**(1.0/3.0))
 
 def trapezoidal(myFunc,x,h,N):
 #Performs the trapezoidal rule (equation 1.9). The average of the function evaluated at
@@ -30,7 +30,7 @@ def trapezoidal(myFunc,x,h,N):
 #Output: ans -- approximate integral
 #JL TODO: This evaluates myFunc twice at x+(i+1)*h then again at x+i_{+}*h. Could be improved 
 #to use results from previous iteration.
-    return sum((myFunc(x+i*h)+myFunc(x+(i+1)*h))*h/2.0 for i in range(N))
+    return(sum((myFunc(x+i*h)+myFunc(x+(i+1)*h))*h/2.0 for i in range(N)))
     
 def simpsons(myFunc,x,h,N):
 #Performs Simpons rule (equation 1.12).
@@ -43,11 +43,11 @@ def simpsons(myFunc,x,h,N):
     sum = myFunc(x) + myFunc(x+N*h)
     for i in range(1,N):                        #1,N-1 ignores first and last points
 #Adds the contribution from the even placed lattice points        
-        if (i%2 == 1):
+        if(i%2 == 1):
             sum = sum+4.0*myFunc(x+i*h)
 #Adds the contribution from the odd placed lattice points            
         else: sum=sum+2.0*myFunc(x+i*h)                               
-    return sum *h/3.0                             #Apply leading factor
+    return(sum *h/3.0)                         #Apply leading factor
 
 def booles(myFunc,x,h,N):
 #Performs Bode's rule (equation 1.13b)
@@ -56,16 +56,16 @@ def booles(myFunc,x,h,N):
 #        N -- number of lattices
 #Output: sum -- approximate integral 
 #Add the contribution from the first and last points of the domain
-    sum = 7.0*(myFunc(x) + myFunc(x+N*h))
+    sum = 7.0*(myFunc(x)+myFunc(x+N*h))
     for i in range(1,N):                        #N-1 ignores last point
 #Adds the contribution from the even placed lattice points        
-        if (i%2 == 1):
+        if(i%2 == 1):
             sum = sum+32.0*myFunc(x+i*h)
         elif(i%4 == 2):
             sum = sum+12.0*myFunc(x+i*h)
 #Adds the contribution from the odd placed lattice points            
-        else: sum = sum + 14.0*myFunc(x+i*h)                    
-    return sum*2.0*h/45.0                  #Apply leading factor
+        else: sum = sum+14.0*myFunc(x+i*h)                    
+    return(sum*2.0*h/45.0                  #Apply leading factor
 
 #=====================================================================================
 #                               Begin main

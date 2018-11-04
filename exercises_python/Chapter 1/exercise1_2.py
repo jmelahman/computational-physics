@@ -59,8 +59,8 @@ def booles(myFunc,x,h,N):
 #Adds the contribution from the even placed lattice points        
         if (i%2 == 1):
             sum = sum+32.0*myFunc(x+i*h)
-        elif(i%4 == 2):
-            sum = sum+12.0*myFunc(x+i*h)
+#        elif(i%4 == 2):
+#            sum = sum+12.0*myFunc(x+i*h)
 #Adds the contribution from the odd placed lattice points            
         else: sum = sum+14.0*myFunc(x+i*h)                         
     return sum * 2.0*h/45.0                  #Apply leading factor

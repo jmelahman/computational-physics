@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/Arch Linux) (preloaded format=pdflatex 2018.9.25)  27 SEP 2018 22:06
+This is pdfTeX, Version 3.14159265-2.6-1.40.19 (TeX Live 2018/Arch Linux) (preloaded format=pdflatex 2018.9.25)  3 NOV 2018 19:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -608,57 +608,73 @@ Underfull \hbox (badness 10000) in paragraph at lines 23--26
 LaTeX Font Info:    Try loading font information for OT1+pcr on input line 48.
 (/usr/share/texmf-dist/tex/latex/psnfss/ot1pcr.fd
 File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+LaTeX Font Info:    Try loading font information for TS1+pcr on input line 77.
+
+(/usr/share/texmf-dist/tex/latex/psnfss/ts1pcr.fd
+File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
 ) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Try loading font information for TS1+pcr on input line 79.
- (/usr/share/texmf-dist/tex/latex/psnfss/ts1pcr.fd
-File: ts1pcr.fd 2001/06/04 font definitions for TS1/pcr.
-)
-Underfull \hbox (badness 10000) in paragraph at lines 162--164
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
+Underfull \hbox (badness 10000) in paragraph at lines 157--159
 
  []
 
-[2]
-Underfull \hbox (badness 10000) in paragraph at lines 165--169
+[3]
+Underfull \hbox (badness 10000) in paragraph at lines 160--164
 
  []
 
-<./images/interpolation.png, id=94, 462.528pt x 197.0562pt>
+<./images/interpolation.png, id=93, 462.528pt x 197.0562pt>
 File: ./images/interpolation.png Graphic file (type png)
 <use ./images/interpolation.png>
-Package pdftex.def Info: ./images/interpolation.png  used on input line 184.
+Package pdftex.def Info: ./images/interpolation.png  used on input line 179.
 (pdftex.def)             Requested size: 433.62pt x 184.74873pt.
 
-Overfull \hbox (1.0559pt too wide) in paragraph at lines 195--196
+Overfull \hbox (1.0559pt too wide) in paragraph at lines 190--191
 [][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
 ][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
 [][][][][][] 
  []
 
-[3] [4 <./images/interpolation.png>] [5]
-Underfull \hbox (badness 10000) in paragraph at lines 317--319
+LaTeX Font Info:    Try loading font information for OMS+pcr on input line 196.
+
+(/usr/share/texmf-dist/tex/latex/psnfss/omspcr.fd
+File: omspcr.fd 
+)
+LaTeX Font Info:    Font shape `OMS/pcr/m/n' in size <8> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 196.
+
+Overfull \hbox (29.85619pt too wide) in paragraph at lines 196--197
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][] 
+ []
+
+[4 <./images/interpolation.png>] [5] [6]
+Underfull \hbox (badness 10000) in paragraph at lines 306--308
 
  []
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 333.
-[6]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 333.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 322.
+[7]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 322.
  (./chapter_1.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 333.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 333.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 322.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 322.
 Package rerunfilecheck Info: File `chapter_1.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 333.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 322.
  ) 
 Here is how much of TeX's memory you used:
- 10309 strings out of 492642
- 147573 string characters out of 6135566
- 467084 words of memory out of 5000000
- 13967 multiletter control sequences out of 15000+600000
+ 10315 strings out of 492642
+ 147700 string characters out of 6135566
+ 454084 words of memory out of 5000000
+ 13980 multiletter control sequences out of 15000+600000
  10418 words of font info for 41 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 36i,11n,42p,644b,1883s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 36i,11n,42p,642b,1877s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texmf-dist/fon
 ts/type1/public/amsfonts/cm/cmbx10.pfb></usr/share/texmf-dist/fonts/type1/publi
 c/amsfonts/cm/cmcsc10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm
@@ -670,11 +686,12 @@ ts/cm/cmr6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb><
 /usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf
 -dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/ty
 pe1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmti10.pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb>
-Output written on chapter_1.pdf (6 pages, 231901 bytes).
+onts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.
+pfb></usr/share/texmf-dist/fonts/type1/urw/courier/ucrr8a.pfb>
+Output written on chapter_1.pdf (7 pages, 239531 bytes).
 PDF statistics:
- 260 PDF objects out of 1000 (max. 8388607)
- 233 compressed objects within 3 object streams
- 118 named destinations out of 1000 (max. 500000)
+ 256 PDF objects out of 1000 (max. 8388607)
+ 227 compressed objects within 3 object streams
+ 108 named destinations out of 1000 (max. 500000)
  6 words of extra memory for PDF output out of 10000 (max. 10000000)
 
