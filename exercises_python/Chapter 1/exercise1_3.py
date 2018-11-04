@@ -40,14 +40,14 @@ def simpsons(myFunc,x,h,N):
 #Output: sum -- approximate integral
     
 #Add the contribution from the first and last points of the domain
-    sum = myFunc(x) + myFunc(x+N*h)
+    sum = myFunc(x)+myFunc(x+N*h)
     for i in range(1,N):                        #1,N-1 ignores first and last points
 #Adds the contribution from the even placed lattice points        
         if(i%2 == 1):
             sum = sum+4.0*myFunc(x+i*h)
 #Adds the contribution from the odd placed lattice points            
         else: sum=sum+2.0*myFunc(x+i*h)                               
-    return(sum *h/3.0)                         #Apply leading factor
+    return(sum*h/3.0)                         #Apply leading factor
 
 def booles(myFunc,x,h,N):
 #Performs Bode's rule (equation 1.13b)
@@ -65,7 +65,7 @@ def booles(myFunc,x,h,N):
             sum = sum+12.0*myFunc(x+i*h)
 #Adds the contribution from the odd placed lattice points            
         else: sum = sum+14.0*myFunc(x+i*h)                    
-    return(sum*2.0*h/45.0                  #Apply leading factor
+    return(sum*2.0*h/45.0)                  #Apply leading factor
 
 #=====================================================================================
 #                               Begin main
@@ -73,7 +73,7 @@ def booles(myFunc,x,h,N):
 #Declaring constants
 trig_a = 0.0                                    #lower bound
 trig_b = math.pi/2.0                            #upper bound
-N = [4,8,16,32,64,128]                          #number of lattices
+N = (4,8,16,32,64,128)                          #number of lattices
 
 #Exact solution is given
 exact = 2.0*math.pi/math.sqrt(3)
@@ -90,6 +90,6 @@ for i in range(len(N)):
     trigErrorBool = booles(trig_sub, trig_a, trig_h, N[i]) - exact
     
     #Outputs in a format compatible with LaTex tabular :)
-    fout.write('{0} & {1} & {2} & {3} & {4} \n'.format(N[i], trig_h, trigErrorTrap, trigErrorSimp, trigErrorBool))
+    fout.write('{0} & {1:.5f} & {2:.6f} & {3:.6f} & {4:.6f} \n'.format(N[i], trig_h, trigErrorTrap, trigErrorSimp, trigErrorBool))
 fout.close()
     

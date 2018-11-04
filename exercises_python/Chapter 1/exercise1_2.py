@@ -59,8 +59,8 @@ def booles(myFunc,x,h,N):
 #Adds the contribution from the even placed lattice points        
         if (i%2 == 1):
             sum = sum+32.0*myFunc(x+i*h)
-#        elif(i%4 == 2):
-#            sum = sum+12.0*myFunc(x+i*h)
+        elif(i%4 == 2):
+            sum = sum+12.0*myFunc(x+i*h)
 #Adds the contribution from the odd placed lattice points            
         else: sum = sum+14.0*myFunc(x+i*h)                         
     return sum * 2.0*h/45.0                  #Apply leading factor
@@ -71,7 +71,7 @@ def booles(myFunc,x,h,N):
 #Declaring constants
 a = 0.0                                         #lower bound
 b = 1.0                                         #upper bound
-N = [4,8,16,32,64,128]                          #number of lattices
+N = (4,8,16,32,64,128)                          #number of lattices
 
 #The exact solution is the antiderivative (exp.math(x) in this case) 
 #evaluated at the upper bound minus the value at the lower bound.  
@@ -89,7 +89,7 @@ for i in range(len(N)):
     error3 = booles(myExp, a, h, N[i]) - exact
     
     #Outputs in a format compatible with LaTex tabular :)
-    fout.write('{0} & {1} & {2} & {3} & {4} \n'.format(N[i],h,error1,error2,error3))
+    fout.write('{0:.5f} & {1:.6f} & {2:.6f} & {3:.6f} & {4:.6f} \n'.format(N[i],h,error1,error2,error3))
     
 fout.close()
     
