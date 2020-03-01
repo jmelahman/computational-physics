@@ -60,13 +60,13 @@ def backward2(x,h):
 #Output: dependent variable
     return((myFunc(x+h)-myFunc(x))/h)
 \end{lstlisting}
-    
+
 We can improve the accuracy by including more terms. Using the immediate values forwards and backwards allows for the terms with even-powered values of \textit{h} to cancel out. Eq \ref{eq:symmetric3} is the quadratic polynomial interpolation of the function over the two previous regions,
 
 \begin{equation}
 \label{eq:symmetric3}
 	f'=\frac{f(x_{k+1})-f(x_{k-1})}{2h} + \mathcal{O}(h^2).
-\end{equation} 
+\end{equation}
 Python interpration of Eq.\ref{eq:symmetric3},
 \begin{lstlisting}
 def symmetric3(x,h):
@@ -74,7 +74,7 @@ def symmetric3(x,h):
 #Input:  x -- independent variable
 #        h -- step-size
 #Output: dependent variable
-    return(myFunc(x+h)-myFunc(x-h))/(2*h))
+    return((myFunc(x+h) - myFunc(x-h)) / (2*h))
 \end{lstlisting}
 
 The final two equations, the "4-point" and "5-point" formulas, are similarly found and include more interactions fowards and backwards to create higher-order approximations of the function over the given interval. They, along with their higher-order derivatives, are given in Table \ref{tab:differentiation}. The 5-point formula is the five-point stencil in one-dimension. \\
@@ -126,21 +126,21 @@ def symmetric5(x,h):
 		\hline
 		h & Fwd 2-pnt Eq. \ref{eq:forward2} & Bkwd 2-pnt Eq. \ref{eq:backward2} & 3-pnt Eq. \ref{eq:symmetric3} & 4-pnt Tab. \ref{tab:differentiation} & 5-pnt Tab. \ref{tab:differentiation} \\
 		\hline
-		0.50000&-0.228254&0.183789&-0.022233&-0.009499&-0.001093\\ 
-		0.20000&-0.087462&0.080272&-0.003595&-0.000586&-0.000029\\ 
-		0.10000&-0.042939&0.041138&-0.000900&-0.000072&-0.000002\\ 
-		0.05000&-0.021257&0.020807&-0.000225&-0.000009&-0.000000\\ 
-		0.02000&-0.008450&0.008378&-0.000036&-0.000001&-0.000000\\ 
-		0.01000&-0.004216&0.004198&-0.000009&-0.000000&-0.000000\\ 
-		0.00500&-0.002106&0.002101&-0.000002&-0.000000&-0.000000\\ 
-		0.00200&-0.000842&0.000841&-0.000000&-0.000000&-0.000000\\ 
-		0.00100&-0.000421&0.000421&-0.000000&-0.000000&-0.000000\\ 
-		0.00050&-0.000210&0.000210&-0.000000&-0.000000&-0.000000\\ 
-		0.00020&-0.000084&0.000084&-0.000000&-0.000000&-0.000000\\ 
-		0.00010&-0.000042&0.000042&-0.000000&0.000000&0.000000\\ 
-		0.00005&-0.000021&0.000021&-0.000000&0.000000&0.000000\\ 
-		0.00002&-0.000008&0.000008&-0.000000&-0.000000&0.000000\\ 
-		0.00001&-0.000004&0.000004&-0.000000&-0.000000&-0.000000\\ 
+		0.50000&-0.228254&0.183789&-0.022233&-0.009499&-0.001093\\
+		0.20000&-0.087462&0.080272&-0.003595&-0.000586&-0.000029\\
+		0.10000&-0.042939&0.041138&-0.000900&-0.000072&-0.000002\\
+		0.05000&-0.021257&0.020807&-0.000225&-0.000009&-0.000000\\
+		0.02000&-0.008450&0.008378&-0.000036&-0.000001&-0.000000\\
+		0.01000&-0.004216&0.004198&-0.000009&-0.000000&-0.000000\\
+		0.00500&-0.002106&0.002101&-0.000002&-0.000000&-0.000000\\
+		0.00200&-0.000842&0.000841&-0.000000&-0.000000&-0.000000\\
+		0.00100&-0.000421&0.000421&-0.000000&-0.000000&-0.000000\\
+		0.00050&-0.000210&0.000210&-0.000000&-0.000000&-0.000000\\
+		0.00020&-0.000084&0.000084&-0.000000&-0.000000&-0.000000\\
+		0.00010&-0.000042&0.000042&-0.000000&0.000000&0.000000\\
+		0.00005&-0.000021&0.000021&-0.000000&0.000000&0.000000\\
+		0.00002&-0.000008&0.000008&-0.000000&-0.000000&0.000000\\
+		0.00001&-0.000004&0.000004&-0.000000&-0.000000&-0.000000\\
 		\hline
 		\end{tabular}
 	\end{center}
@@ -183,7 +183,7 @@ where \textit{h} is the width of the lattice (see the dashed lines in Fig.\ref{f
 	\label{fig:interpolation}
 	\end{center}
 \end{figure}
-    
+
 The Python interpretation of the Trapezoid method is,
 \begin{lstlisting}
 def trapezoidal(myFunc,x,h,N):
@@ -193,12 +193,12 @@ def trapezoidal(myFunc,x,h,N):
 #        h -- step-size
 #        N -- number of lattices
 #Output: ans -- approximate integral
-#JL TODO: This evaluates myFunc twice at x+(i+1)*h then again at x+i_{+}*h. Could be improved 
+#JL TODO: This evaluates myFunc twice at x+(i+1)*h then again at x+i_{+}*h. Could be improved
 #to use results from previous iteration.
     return(sum((myFunc(x+i*h)+myFunc(x+(i+1)*h))*h/2.0 for i in range(N)))
 \end{lstlisting}
 
-The behavior of the error for the trapezoid method is very much dependent on the behavior of the function over the given interval. When the function is concave up (such as the the function over the interval [\textit{a+h,b}] in Fig.\ref{fig:interpolation}), the trapezoid method will over-estimate the true value. Similarly, when the function is concave down, (such as the function over the interval [\textit{a,a+h}] in Fig.\ref{fig:interpolation}), the trapezoid method will under-estimate the true value. 
+The behavior of the error for the trapezoid method is very much dependent on the behavior of the function over the given interval. When the function is concave up (such as the the function over the interval [\textit{a+h,b}] in Fig.\ref{fig:interpolation}), the trapezoid method will over-estimate the true value. Similarly, when the function is concave down, (such as the function over the interval [\textit{a,a+h}] in Fig.\ref{fig:interpolation}), the trapezoid method will under-estimate the true value.
 
 Conversely, the midpoint method,
 
@@ -211,7 +211,7 @@ will consistently approximate in the integral in the opposite direction from the
 \[
 	|EM_N| = \frac{1}{2}|ET_N|
 \]
-and can be easily combined in a way to completely eliminate this error.\footnote{Taken from Introduction to Numerical Methods and \textsc{matlab} Programming for Engineers by Todd Young and Martin J. Mohlenkamp} This equation is known as the Simpson's Rule, 
+and can be easily combined in a way to completely eliminate this error.\footnote{Taken from Introduction to Numerical Methods and \textsc{matlab} Programming for Engineers by Todd Young and Martin J. Mohlenkamp} This equation is known as the Simpson's Rule,
 
 \[
 	S_{2N} = \frac{1}{3}(2M_N + M_N).
@@ -224,22 +224,22 @@ Note, in the equation above, S is given the subscript $_{2N}$ since the midpoint
 \end{equation}
 
 The Python interpretation of Simpson's Rule is,
-\begin{lstlisting}   
+\begin{lstlisting}
 def simpsons(myFunc,x,h,N):
 #Performs Simpons rule (equation 1.12).
 #Input:  x -- lower bound of the range of integration
 #        h -- step-size
 #        N -- number of lattices
 #Output: sum -- approximate integral
-    
+
 #Add the contribution from the first and last points of the domain
     sum = myFunc(x) + myFunc(x+N*h)
     for i in range(1,N):                        #1,N-1 ignores first and last points
-#Adds the contribution from the even placed lattice points        
+#Adds the contribution from the even placed lattice points
         if(i%2 == 1):
             sum = sum+4.0*myFunc(x+i*h)
-#Adds the contribution from the odd placed lattice points            
-        else: sum=sum+2.0*myFunc(x+i*h)                               
+#Adds the contribution from the odd placed lattice points
+        else: sum=sum+2.0*myFunc(x+i*h)
     return(sum *h/3.0)                         #Apply leading factor
 \end{lstlisting}
 
@@ -262,21 +262,21 @@ def booles(myFunc,x,h,N):
 #Input:  x -- lower bound of the range of integration
 #        h -- step-size
 #        N -- number of lattices
-#Output: sum -- approximate integral 
+#Output: sum -- approximate integral
 #Add the contribution from the first and last points of the domain
     sum = 7.0*(myFunc(x)+myFunc(x+N*h))
     for i in range(1,N):                        #N-1 ignores last point
-#Adds the contribution from the even placed lattice points        
+#Adds the contribution from the even placed lattice points
         if(i%2 == 1):
             sum = sum+32.0*myFunc(x+i*h)
         elif(i%4 == 2):
             sum = sum+12.0*myFunc(x+i*h)
-#Adds the contribution from the odd placed lattice points            
-        else: sum = sum+14.0*myFunc(x+i*h)                    
+#Adds the contribution from the odd placed lattice points
+        else: sum = sum+14.0*myFunc(x+i*h)
     return(sum*2.0*h/45.0                  #Apply leading factor
 \end{lstlisting}
 \label{solution:1.2}\textbf{Solution:}
-Using the functions from above, we are able to produce the values for Table \ref{tab:quad_errors}. As we expected, Boole's Rule gives the greatest accuracy with largest value of \textit{h} followed by Simpson's Rule then the Trapezoidal Method.\footnote{For the full program responsible for Table \ref{tab:diff_errors}, see my \href{https://github.com/jmelahman/computational-physics-solutions/blob/master/exercises_python/Chapter\%201/exercise1_2.py}{GitHub}.} 
+Using the functions from above, we are able to produce the values for Table \ref{tab:quad_errors}. As we expected, Boole's Rule gives the greatest accuracy with largest value of \textit{h} followed by Simpson's Rule then the Trapezoidal Method.\footnote{For the full program responsible for Table \ref{tab:diff_errors}, see my \href{https://github.com/jmelahman/computational-physics-solutions/blob/master/exercises_python/Chapter\%201/exercise1_2.py}{GitHub}.}
 \begin{table}[!ht]
 	% Center the table
 	\begin{center}
@@ -288,16 +288,16 @@ Using the functions from above, we are able to produce the values for Table \ref
 		\hline
 		N & \textit{h} & Trapezoidal Eq.\ref{eq:trapezoidal} & Simpson's Eq.\ref{eq:simpson} & Boole's Eq\ref{eq:boole} \\
 		\hline
-		4.000000&0.25000&0.008940&0.000037&0.000001\\ 
-		8.000000&0.12500&0.002237&0.000002&0.000000\\ 
-		16.000000&0.06250&0.000559&0.000000&0.000000\\ 
-		32.000000&0.03125&0.000140&0.000000&0.000000\\ 
-		64.000000&0.01562&0.000035&0.000000&0.000000\\ 
-		128.000000&0.00781&0.000009&0.000000&-0.000000\\ 
+		4.000000&0.25000&0.008940&0.000037&0.000001\\
+		8.000000&0.12500&0.002237&0.000002&0.000000\\
+		16.000000&0.06250&0.000559&0.000000&0.000000\\
+		32.000000&0.03125&0.000140&0.000000&0.000000\\
+		64.000000&0.01562&0.000035&0.000000&0.000000\\
+		128.000000&0.00781&0.000009&0.000000&-0.000000\\
 		\hline
 		\end{tabular}
 	\end{center}
-\end{table} 
+\end{table}
 
 \newpage\noindent
 \label{exercise:1.3}\textbf{Exercise 1.3:} Write a program to calculate
@@ -317,6 +317,6 @@ we can split the integral above into,
 \int^1_0 t^{-2/3}(1-t)^{-1/3}dt=\int_0^{0.5}t^{-2/3}(1-t)^{-1/3}dt+\int_{0.5}^1t^{-2/3}(1-t)^{-1/3}dt.
 \end{equation}
 Splitting the integral at 0.5 here was arbitrary and could have realistically been anywhere in the range at least \textit{h} from the endpoints.
-From here, we can perform a \textit{u}-substitution inside each integral to handle the singularities. For the first integrand, 
+From here, we can perform a \textit{u}-substitution inside each integral to handle the singularities. For the first integrand,
 
 \end{document}
