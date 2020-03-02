@@ -3,7 +3,6 @@ pipeline {
   stages {
     stage('Test') {
       steps {
-        pip install -r requirements.txt
         pytest
       }
     }
