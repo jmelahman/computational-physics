@@ -21,7 +21,7 @@ To run the files directly, add the `comp_phys` directory to your python's site m
 For example,
 
 ```
-$ sudo ln -s $PATH_TO_REPO/comp_phys /usr/local/lib/pythonX.Y/site-packages
+$ sudo ln -s comp_phys /usr/local/lib/pythonX.Y/site-packages
 ```
 
 See also, https://docs.python.org/3/library/site.html.
@@ -34,8 +34,8 @@ The repository follows the folling structure,
 /comp_phys/chapters       # List of chapters from the text
 /comp_phys/chapters/chapter_X   # Solutions from chapter X in the text
 /comp_phys/library        # Library of methods used in exercises, example, and projects
+/docs                     # Documentation of the solutions
 /tests                    # Unit tests for library methods
-/docs                # Documentation of the solutions
 
 ## Testing
 
