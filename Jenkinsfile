@@ -3,7 +3,9 @@ pipeline {
   stages {
     stage('Test') {
       steps {
-        sh 'python -m unittest discover /chapters/chapter_1/'
+        pwd
+        ls ~/
+        sh 'python -m unittest discover chapters/chapter_1/'
       }
     }
   }
