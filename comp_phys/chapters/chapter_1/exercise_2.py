@@ -30,27 +30,26 @@ def main():
 
     file_directory = os.path.dirname(os.path.realpath(__file__))
     output_filepath = os.path.join(file_directory, 'output/exercise_2.txt')
-
     a = 0.0                                         # lower bound
     b = 1.0                                         # upper bound
-    N_list = [4, 8, 16, 32, 64, 128]                # number of lattices
+    lattices = [4, 8, 16, 32, 64, 128]                # number of lattices
 
     # The exact solution is the antiderivative (exp.math(x) in this case)
     # evaluated at the upper bound minus the value at the lower bound.
     exact = math.exp(b) - math.exp(a)
 
     with open(output_filepath, 'w+') as out_file:
-        for N in N_list:
+        for N in lattices:
             # Step size is the range of the area of integration divided by number of lattices
             h = (b - a) / N
 
-            error1 = quadrature.trapezoidal(my_function, a, h, N) - exact
-            error2 = quadrature.simpsons(my_function, a, h, N) - exact
-            error3 = quadrature.booles(my_function, a, h, N) - exact
+            error_trapezoidal = quadrature.trapezoidal(my_function, a, h, N) - exact
+            error_simpsons = quadrature.simpsons(my_function, a, h, N) - exact
+            error_booles = quadrature.booles(my_function, a, h, N) - exact
 
             # Outputs in a format compatible with LaTex tabular :)
             out_file.write('{0:.5f} & {1:.6f} & {2:.6f} & {3:.6f} & {4:.6f}\n'.format(
-                N, h, error1, error2, error3))
+                N, h, error_trapezoidal, error_simpsons, error_booles))
 
 
 if __name__ == '__mian__':

@@ -13,6 +13,7 @@ import os
 
 from comp_phys.library import differentiation
 
+
 def my_sin(x):
     """
     Function to be evaluated.
@@ -35,15 +36,16 @@ def main():
 
     with open(output_filepath, 'w+') as out_file:
         for h in h_list:
-            #Evaluates the error for each method
-            error1 = differentiation.backward2(my_sin, value, h) - exact
-            error2 = differentiation.forward2(my_sin, value, h) - exact
-            error3 = differentiation.symmetric3(my_sin, value, h) - exact
-            error4 = differentiation.symmetric4(my_sin, value, h) - exact
-            error5 = differentiation.symmetric5(my_sin, value, h) - exact
-            #Outputs in a format compatible with LaTex tabular :)
+            error_backward = differentiation.backward2(my_sin, value, h) - exact
+            error_forward = differentiation.forward2(my_sin, value, h) - exact
+            error_symmetric3 = differentiation.symmetric3(my_sin, value, h) - exact
+            error_symmetric4 = differentiation.symmetric4(my_sin, value, h) - exact
+            error_symmetric5 = differentiation.symmetric5(my_sin, value, h) - exact
+            # Outputs in a format compatible with LaTex tabular :)
             out_file.write('{0:.5f} & {1:.6f} & {2:.6f} & {3:.6f} & {4:.6f} & {5:.6f}\n'.format(
-                h, error1, error2, error3, error4, error5))
+                h, error_backward, error_forward, error_symmetric3, error_symmetric4,
+                error_symmetric5))
+
 
 if __name__ == '__main__':
     main()
