@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage('Test') {
       steps {
-        pytest
+        python -m unittest discover chapters/chapter_1/
       }
     }
   }
