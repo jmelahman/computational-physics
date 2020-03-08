@@ -3,8 +3,8 @@ pipeline {
   stages {
     stage('Test') {
       steps {
-        pwd
-        ls ~/
+        sh 'pwd'
+        sh 'ls ~/'
         sh 'python3 --version'
       }
     }
