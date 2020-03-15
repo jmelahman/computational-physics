@@ -12,22 +12,30 @@ def trapezoidal(myFunc,x,h,N):
     return sum((myFunc(x+i*h)+myFunc(x+(i+1)*h))*h/2.0 for i in range(N))
 
 
-def simpsons(myFunc,x,h,N):
-#Performs Simpons rule (equation 1.12).
-#Input:  x -- lower bound of the range of integration
-#        h -- step-size
-#        N -- number of lattices
-#Output: sum -- approximate integral
-
-#Add the contribution from the first and last points of the domain
+def simpsons(input_function, x, h, N):
+    """
+    Performs Simpons rule (equation 1.12).
+    Input:  x -- lower bound of the range of integration
+            h -- step-size
+            N -- number of lattices
+    Output: sum -- approximate integral
+    """
+    odd_lattice_factor = 2.0
+    even_lattice_factor = 4.0
+    # Add the contribution from the first and last points of the domain
     sum = myFunc(x) + myFunc(x+N*h)
-    for i in range(1,N):                        #1,N ignores first and last points
-#Adds the contribution from the even placed lattice points
+
+    for i in range(1, N):                        #1,N ignores first and last points
+
+        #Adds the contribution from the even placed lattice points
         if (i%2 == 1):
             sum = sum+4.0*myFunc(x+i*h)
-#Adds the contribution from the odd placed lattice points
-        else: sum = sum+2.0*myFunc(x+i*h)
-    return sum*h/3.0                             #Apply leading factor
+        #Adds the contribution from the odd placed lattice points
+
+        else:
+
+        sum = sum+2.0*myFunc(x+i*h)
+    return sum * (h / 3.0)
 
 def booles(myFunc,x,h,N):
 #Performs Bode's rule (equation 1.13b)
@@ -45,4 +53,4 @@ def booles(myFunc,x,h,N):
             sum = sum+12.0*myFunc(x+i*h)
 #Adds the contribution from the odd placed lattice points
         else: sum = sum+14.0*myFunc(x+i*h)
-    return sum * 2.0*h/45.0                  #Apply leading factor
+    return sum * ((2.0 * h) / 45.0)
