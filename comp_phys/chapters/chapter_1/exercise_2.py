@@ -13,7 +13,7 @@ Solution by Jamison Lahman, June 11, 2018
 import math
 import os
 
-from comp_phys.library import quadrature
+from comp_phys.lib import quadrature
 
 
 def my_function(x):

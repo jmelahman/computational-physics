@@ -9,12 +9,13 @@ by Steven E. Koonin and Dawn C. Meredith
 Solution by Jamison Lahman, August 5, 2018
 """
 import math
+import os
 
-from comp_phys.library import root_finding
+from comp_phys.lib import root_finding
 
 def my_function(x):
     """
-    Function to be evaluated
+    Function to be evaluatedi, x^2 - 5
     Input:  x -- independent variable
     Output: y -- dependent variable
     """
@@ -23,6 +24,7 @@ def my_function(x):
 
 def my_function_prime(x):
     """
+    The derivative of my_function(), 2x
     Input:  x -- independent variable
     Output: y -- dependent variable
     """
@@ -34,15 +36,18 @@ def main():
 
     file_directory = os.path.dirname(os.path.realpath(__file__))
     output_filepath = os.path.join(file_directory, 'output/exercise_5.txt')
-    initial_guess = 1.67                                # initial guess of x
+    initial_guess = 1.67                                # initial guess of root
+    x_tolerance = 0.0001
 
     with open(output_filepath, 'w+') as out_file:
-        newton_raphson_iterations = root_finding.newton_raphson(my_function, initial_guess)
-        secant_iterations = root_finding.secant(my_function, initial_guess)
+        newton_raphson_iterations = root_finding.newton_raphson(initial_guess
+            my_function, x_tolerance)
+        secant_iterations = root_finding.secant(initial_guess, my_function
+            x_tolerance)
 
         #Outputs in a format compatible with LaTex tabular :)
-        out_file.write('{0:.5f} & {1:.6f} & {2:.6f} & {3:.6f} & {4:.6f} & {5:.6f}\n'.format(
-            h, newton_raphson_iterations, secant_iterations)
+        out_file.write('{0:.4f} & {1} & {2}\n'.format(x_tolerance,
+          newton_raphson_iterations, secant_iterations))
 
 
 if __name__ == '__main__':
