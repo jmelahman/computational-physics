@@ -29,18 +29,17 @@ See also, https://docs.python.org/3/library/site.html.
 ### Repository structure
 
 The repository follows the folling structure,
-
-`/computational_physics`                # Contains all relevant modules
-
-`/computational_physics/chapters`       # List of chapters from the text
-
-`/computational_physics/chapters/chapter_X`   # Solutions from chapter X
-
-`/computational_physics/*`              # Other helper methods
-
-`/docs`                                 # Documentation of the solutions
-
-`/tests`                                # Unit tests for library methods
+``` 
+├── computational_physics/  Source code
+│   └── chapters/           Solutions to problems sorted by chapter
+├── docs/                   LaTeX guide
+│   └── images/             Images for the guides
+├── tests/                  Unit tests
+├── launcher.py             Start script
+├── LICENSE                 Copyright information
+├── README.md               This file
+└── requirements.py         List of 3rd-party packages
+```
 
 ## Tooling
 
