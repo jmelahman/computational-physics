@@ -12,20 +12,12 @@ def trapezoidal(upper_bound, lower_bound, function,
     """
     h = get_step_size(upper_bound, lower_bound, number_of_lattices)
     x = lower_bound
-    sum = 0
 
-    f_minus_1 = function(lower_bound)
-    x += h
-    f_0 = function(x)
-
-    for iteration in range(2, number_of_lattices):
-      x += h
-      f_1 = function(x)
-      sum += f_minus_1 + (2.0 * f_0) + f_1
-      f_minus_1 = f_0
-      f_0 = f_1
+    sum = function(upper_bound) + function(lower_bound)
+    for iteration in range(1, number_of_lattices):
+        x += h
+        sum += 2.0 * function(x)
     return (h / 2.0) * sum
-
 
 def simpsons(upper_bound, lower_bound, function,
              number_of_lattices=DEFAULT_NUMBER_OF_LATTICES):
