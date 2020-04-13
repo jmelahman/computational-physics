@@ -1,4 +1,4 @@
-from .definitions import get_step_size
+from computational_physics import definitions
 
 DEFAULT_NUMBER_OF_LATTICES = 128
 
@@ -12,7 +12,7 @@ def trapezoidal(upper_bound, lower_bound, function,
             N -- number of lattices
     Output: ans -- approximate integral
     """
-    h = get_step_size(upper_bound, lower_bound, number_of_lattices)
+    h = definitions.get_step_size(upper_bound, lower_bound, number_of_lattices)
     x = lower_bound
 
     sum = function(upper_bound) + function(lower_bound)
@@ -31,7 +31,7 @@ def simpsons(upper_bound, lower_bound, function,
             number_of_lattices -- number of lattices; N
     Output: sum -- approximate integral
     """
-    h = get_step_size(upper_bound, lower_bound, number_of_lattices)
+    h = definitions.get_step_size(upper_bound, lower_bound, number_of_lattices)
     x = lower_bound
 
     sum = function(upper_bound) + function(lower_bound)
@@ -53,7 +53,7 @@ def booles(upper_bound, lower_bound, function,
             number_of_lattices -- number of lattices; N
     Output: sum -- approximate integral
     """
-    h = get_step_size(upper_bound, lower_bound, number_of_lattices)
+    h = definitions.get_step_size(upper_bound, lower_bound, number_of_lattices)
     x = lower_bound
 
     # Handle special case for first and last points
