@@ -17,11 +17,11 @@ $ python launcher.py <chapter> --example
 $ python launcher.py <chapter> --project
 ```
 
-To run the files directly, add the `comp_phys` directory to your python's site module.
+To run the files directly, add the `computational_physics` directory to your python's site module.
 For example,
 
 ```
-$ sudo ln -s comp_phys /usr/local/lib/pythonX.Y/site-packages
+$ sudo ln -s computational_physics /usr/local/lib/pythonX.Y/site-packages
 ```
 
 See also, https://docs.python.org/3/library/site.html.
@@ -30,16 +30,16 @@ See also, https://docs.python.org/3/library/site.html.
 
 The repository follows the folling structure,
 
-/comp_phys                # Contains all relevant modules
-/comp_phys/chapters       # List of chapters from the text
-/comp_phys/chapters/chapter_X   # Solutions from chapter X in the text
-/comp_phys/library        # Library of methods used in exercises, example, and projects
+/computational_physics                # Contains all relevant modules
+/computational_physics/chapters       # List of chapters from the text
+/computational_physics/chapters/chapter_X   # Solutions from chapter X in the text
+/computational_physics/library        # Library of methods used in exercises, example, and projects
 /docs                     # Documentation of the solutions
 /tests                    # Unit tests for library methods
 
 ## Tooling
 
-No third-party packages are needed to execute any of the scripts in `comp_phys/`.
+No third-party packages are needed to execute any of the scripts in `computational_physics/`.
 Some third-party packages are used for development purposes.
 They're defined in the `requirements.txt` file.
 To install the requirements, run,

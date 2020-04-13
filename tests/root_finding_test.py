@@ -1,7 +1,7 @@
 import math
 import unittest
 
-from comp_phys.lib import root_finding
+from computational_physics.basic import root_finding
 
 class TestRootFinding(unittest.TestCase):
     def setUp(self):

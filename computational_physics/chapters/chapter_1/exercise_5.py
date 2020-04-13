@@ -11,7 +11,7 @@ Solution by Jamison Lahman, August 5, 2018
 import math
 import os
 
-from comp_phys.lib import root_finding
+from computational_physics.basic import root_finding
 
 def my_function(x):
     """

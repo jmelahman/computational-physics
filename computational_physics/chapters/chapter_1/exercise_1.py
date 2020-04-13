@@ -11,7 +11,7 @@ Solution by Jamison Lahman, June 3, 2017
 import math
 import os
 
-from comp_phys.lib import differentiation
+from computational_physics.basic import differentiation
 
 
 def my_sin(x):

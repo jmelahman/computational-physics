@@ -6,7 +6,7 @@ def run_module(name):
     module.main()
 
 def main(chapter, exercise, example, project):
-    chapters_path = 'comp_phys.chapters'
+    chapters_path = 'computational_physics.chapters'
     if exercise:
         module_name = '{}.chapter_{}.exercise_{}'.format(chapters_path, chapter, exercise)
         run_module(module_name)

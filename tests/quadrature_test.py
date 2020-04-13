@@ -1,7 +1,7 @@
 import math
 import unittest
 
-from comp_phys.lib import quadrature
+from computational_physics.basic import quadrature
 
 class TestQuadrature(unittest.TestCase):
     def setUp(self):
@@ -11,10 +11,15 @@ class TestQuadrature(unittest.TestCase):
             self.my_function(self.lower_bound))
         self.number_of_lattices = 128
 
-#    def test_simpsons(self):
-#        observed = quadrature.simpsons(self.upper_bound, self.lower_bound,
-#            self.my_function, self.number_of_lattices)
-#        self.check_error(observed)
+    def test_trapezoidal(self):
+        observed = quadrature.trapezoidal(self.upper_bound, self.lower_bound,
+            self.my_function, self.number_of_lattices)
+        self.check_error(observed)
+
+    def test_simpsons(self):
+        observed = quadrature.simpsons(self.upper_bound, self.lower_bound,
+            self.my_function, self.number_of_lattices)
+        self.check_error(observed)
 
     def test_booles(self):
         observed = quadrature.booles(self.upper_bound, self.lower_bound,
