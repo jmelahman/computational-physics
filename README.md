@@ -30,12 +30,17 @@ See also, https://docs.python.org/3/library/site.html.
 
 The repository follows the folling structure,
 
-/computational_physics                # Contains all relevant modules
-/computational_physics/chapters       # List of chapters from the text
-/computational_physics/chapters/chapter_X   # Solutions from chapter X in the text
-/computational_physics/library        # Library of methods used in exercises, example, and projects
-/docs                     # Documentation of the solutions
-/tests                    # Unit tests for library methods
+`/computational_physics`                # Contains all relevant modules
+
+`/computational_physics/chapters`       # List of chapters from the text
+
+`/computational_physics/chapters/chapter_X`   # Solutions from chapter X
+
+`/computational_physics/*`              # Other helper methods
+
+`/docs`                                 # Documentation of the solutions
+
+`/tests`                                # Unit tests for library methods
 
 ## Tooling
 

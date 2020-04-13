@@ -1,7 +1,7 @@
 import math
 import unittest
 
-from computational_physics.basic import root_finding
+from computational_physics import root_finding
 
 class TestRootFinding(unittest.TestCase):
     def setUp(self):
@@ -21,7 +21,7 @@ class TestRootFinding(unittest.TestCase):
         observed = guesses[-1]
         self.check_error(observed)
 
-    def test_newton(self):
+    def test_newton_raphson(self):
         guesses = root_finding.newton_raphson(self.initial_guess,
             self.my_function, self.my_function_prime, self.x_tolerance)
         observed = guesses[-1]

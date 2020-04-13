@@ -1,7 +1,7 @@
 import math
 import unittest
 
-from computational_physics.basic import quadrature
+from computational_physics import quadrature
 
 class TestQuadrature(unittest.TestCase):
     def setUp(self):
