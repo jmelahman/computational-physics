@@ -1,3 +1,5 @@
+from .definitions import get_step_size
+
 DEFAULT_NUMBER_OF_LATTICES = 128
 
 def trapezoidal(upper_bound, lower_bound, function,
@@ -66,6 +68,3 @@ def booles(upper_bound, lower_bound, function,
             sum += 14.0 * function(x)
     return ((2.0 * h) / 45.0) * sum
 
-def get_step_size(upper_bound, lower_bound, number_of_lattices):
-    h = (upper_bound - lower_bound) / number_of_lattices
-    return h
