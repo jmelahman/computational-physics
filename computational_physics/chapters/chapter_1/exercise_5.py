@@ -8,6 +8,7 @@ by Steven E. Koonin and Dawn C. Meredith
 
 Solution by Jamison Lahman, August 5, 2018
 """
+import itertools
 import math
 import os
 
@@ -31,23 +32,38 @@ def my_function_prime(x):
 
     return 2.0 * x
 
+def calculate_error(value, exact):
+    if value:
+        return exact - value
+    return 0
+
 def main():
     """Executes exercise 1.5"""
 
     file_directory = os.path.dirname(os.path.realpath(__file__))
     output_filepath = os.path.join(file_directory, 'output/exercise_5.txt')
-    initial_guess = 1.67                                # initial guess of root
+    initial_guess = 1.0                                # initial guess of root
     x_tolerance = 0.0001
+    exact = math.sqrt(5)
+    output_string = ''
+
+    newton_raphson_results = root_finding.newton_raphson(initial_guess,
+        my_function, my_function_prime, x_tolerance, True)
+    secant_results = root_finding.secant(initial_guess, my_function,
+        x_tolerance, True)
+
+    for iteration, (newton_raphson, secant) in \
+        enumerate(itertools.zip_longest(newton_raphson_results,
+        secant_results)):
+
+        newton_raphson_error = calculate_error(newton_raphson, exact)
+        secant_error = calculate_error(secant, exact)
+        # Outputs in a format compatible with LaTex tabular :)
+        output_string += '{0} & {1:.6f} & {2:.6f}\n'.format(iteration,
+            newton_raphson_error, secant_error)
 
     with open(output_filepath, 'w+') as out_file:
-        newton_raphson_iterations = root_finding.newton_raphson(initial_guess
-            my_function, x_tolerance)
-        secant_iterations = root_finding.secant(initial_guess, my_function
-            x_tolerance)
-
-        #Outputs in a format compatible with LaTex tabular :)
-        out_file.write('{0:.4f} & {1} & {2}\n'.format(x_tolerance,
-          newton_raphson_iterations, secant_iterations))
+        out_file.write(output_string)
 
 
 if __name__ == '__main__':

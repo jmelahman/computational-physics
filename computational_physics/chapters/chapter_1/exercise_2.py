@@ -14,7 +14,7 @@ import math
 import os
 
 from computational_physics import quadrature
-
+from computational_physics import definitions
 
 def my_function(x):
     """
@@ -22,6 +22,7 @@ def my_function(x):
     Input:  x -- independent variable
     Output: y -- dependent variable
     """
+
     return math.exp(x)
 
 
@@ -30,27 +31,31 @@ def main():
 
     file_directory = os.path.dirname(os.path.realpath(__file__))
     output_filepath = os.path.join(file_directory, 'output/exercise_2.txt')
-    a = 0.0                                         # lower bound
-    b = 1.0                                         # upper bound
-    lattices = [4, 8, 16, 32, 64, 128]                # number of lattices
+    upper_bound = 1.0
+    lower_bound = 0.0
+    lattices = [4, 8, 16, 32, 64, 128]
 
     # The exact solution is the antiderivative (exp.math(x) in this case)
     # evaluated at the upper bound minus the value at the lower bound.
-    exact = math.exp(b) - math.exp(a)
+    exact = math.exp(upper_bound) - math.exp(lower_bound)
 
     with open(output_filepath, 'w+') as out_file:
         for N in lattices:
-            # Step size is the range of the area of integration divided by number of lattices
-            h = (b - a) / N
+            h = definitions.get_step_size(upper_bound, lower_bound, N)
 
-            error_trapezoidal = quadrature.trapezoidal(my_function, a, h, N) - exact
-            error_simpsons = quadrature.simpsons(my_function, a, h, N) - exact
-            error_booles = quadrature.booles(my_function, a, h, N) - exact
+            trapezoidal_solution = quadrature.trapezoidal(upper_bound,
+                lower_bound, my_function, N)
+            error_trapezoidal = trapezoidal_solution - exact
+            simpsons_solution = quadrature.simpsons(upper_bound, lower_bound,
+                my_function, N)
+            error_simpsons = simpsons_solution - exact
+            booles_solution = quadrature.booles(upper_bound, lower_bound,
+                my_function, N)
+            error_booles = booles_solution - exact
 
             # Outputs in a format compatible with LaTex tabular :)
-            out_file.write('{0:.5f} & {1:.6f} & {2:.6f} & {3:.6f} & {4:.6f}\n'.format(
+            out_file.write('{0} & {1:.7f} & {2:.6f} & {3:.6f} & {4:.6f}\n'.format(
                 N, h, error_trapezoidal, error_simpsons, error_booles))
-
 
 if __name__ == '__mian__':
     main()

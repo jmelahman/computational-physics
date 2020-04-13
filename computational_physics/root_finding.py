@@ -8,7 +8,7 @@ def search(x, function, step_size=0.5, x_tolerance=DEFAULT_X_TOLERANCE):
     Input:  x -- independent variable
             function -- Function to be evaluated
             step_size -- Initial amount to step; dx
-            x_tolerance -- Accuracy of guessed root to the actual
+            x_tolerance -- Accuracy of guessed root to the actual value
     Output: x_values -- List guesses for root
     """
     x_values = [x]
@@ -22,30 +22,33 @@ def search(x, function, step_size=0.5, x_tolerance=DEFAULT_X_TOLERANCE):
         x = x_values[-1]
     return x_values
 
-def newton_raphson(x, function, function_prime, x_tolerance=DEFAULT_X_TOLERANCE):
+def newton_raphson(x, function, function_prime,
+                   x_tolerance=DEFAULT_X_TOLERANCE, return_all=False):
     """
     Performs the Newton-Raphson for root finding
     Input:  x -- independent variable
             function -- Function to be evaluated
             function_prime -- Derivative of function()
-            x_tolerance -- Accuracy of guessed root to the actual
+            x_tolerance -- Accuracy of guessed root to the actual value
     Output: x_values -- List guesses for root
     """
     x_values = [x]
     while (math.fabs(function(x)) > x_tolerance):
         x_values.append(evaluate_newton_raphson(x, function, function_prime))
         x = x_values[-1]
-    return x_values
+    if return_all:
+      return x_values
+    return x
 
 def evaluate_newton_raphson(x_i, function, function_prime):
     return x_i - (function(x_i) / function_prime(x_i))
 
-def secant(x, function, x_tolerance=DEFAULT_X_TOLERANCE):
+def secant(x, function, x_tolerance=DEFAULT_X_TOLERANCE, return_all=False):
     """
     Performs the secant method for root finding
     Input:  x -- independent variable
             function -- Function to be evaluated
-            x_tolerance -- Accuracy of guessed root to the actual
+            x_tolerance -- Accuracy of guessed root to the actual value
     Output: x_values -- List guesses for root
     """
     x_1 = x + 1
@@ -55,7 +58,9 @@ def secant(x, function, x_tolerance=DEFAULT_X_TOLERANCE):
         x_1 = x_values[-1]
         x_1 = evaluate_secant(x, x_1, function)
         x_values.append(x_1)
-    return x_values
+    if return_all:
+        return x_values
+    return x_1
 
 def evaluate_secant(x_i, x_i_minus_1, function):
     return x_i - (function(x_i) * (x_i - x_i_minus_1) / (function(x_i) - function(x_i_minus_1)))
