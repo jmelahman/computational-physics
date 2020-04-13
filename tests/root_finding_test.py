@@ -10,22 +10,19 @@ class TestRootFinding(unittest.TestCase):
         self.x_tolerance = 0.0001
 
     def test_search(self):
-        guesses = root_finding.search(self.initial_guess, self.my_function,
+        root = root_finding.search(self.initial_guess, self.my_function,
             self.x_tolerance)
-        observed = guesses[-1]
-        self.check_error(observed)
+        self.check_error(root)
 
     def test_secant(self):
-        guesses = root_finding.secant(self.initial_guess, self.my_function,
+        root = root_finding.secant(self.initial_guess, self.my_function,
             self.x_tolerance)
-        observed = guesses[-1]
-        self.check_error(observed)
+        self.check_error(root)
 
     def test_newton_raphson(self):
-        guesses = root_finding.newton_raphson(self.initial_guess,
+        root = root_finding.newton_raphson(self.initial_guess,
             self.my_function, self.my_function_prime, self.x_tolerance)
-        observed = guesses[-1]
-        self.check_error(observed)
+        self.check_error(root)
 
     def check_error(self, observed_value):
         error = round(observed_value - self.expected, 4)

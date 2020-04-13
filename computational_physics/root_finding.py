@@ -2,14 +2,18 @@ import math
 
 DEFAULT_X_TOLERANCE = 0.0001
 
-def search(x, function, step_size=0.5, x_tolerance=DEFAULT_X_TOLERANCE):
+def search(x, function, step_size=0.5, x_tolerance = DEFAULT_X_TOLERANCE):
+    """ Returns the last value from search_all() """
+    return search_all(x, function, step_size, x_tolerance)[-1]
+
+def search_all(x, function, step_size=0.5, x_tolerance = DEFAULT_X_TOLERANCE):
     """
     Performs a binary search for root finding
     Input:  x -- independent variable
             function -- Function to be evaluated
             step_size -- Initial amount to step; dx
             x_tolerance -- Accuracy of guessed root to the actual value
-    Output: x_values -- List guesses for root
+    Output: x_values -- List guesses at all iterations
     """
     x_values = [x]
     while (math.fabs(function(x)) > x_tolerance):
@@ -23,33 +27,41 @@ def search(x, function, step_size=0.5, x_tolerance=DEFAULT_X_TOLERANCE):
     return x_values
 
 def newton_raphson(x, function, function_prime,
-                   x_tolerance=DEFAULT_X_TOLERANCE, return_all=False):
+                   x_tolerance = DEFAULT_X_TOLERANCE):
+    """ Returns the last value from newton_raphson_all() """
+    return newton_raphson_all(x, function, function_prime, x_tolerance)[-1]
+
+
+def newton_raphson_all(x, function, function_prime,
+                       x_tolerance = DEFAULT_X_TOLERANCE):
     """
     Performs the Newton-Raphson for root finding
     Input:  x -- independent variable
             function -- Function to be evaluated
             function_prime -- Derivative of function()
             x_tolerance -- Accuracy of guessed root to the actual value
-    Output: x_values -- List guesses for root
+    Output: x_values -- List of guesses at all iterations
     """
     x_values = [x]
     while (math.fabs(function(x)) > x_tolerance):
         x_values.append(evaluate_newton_raphson(x, function, function_prime))
         x = x_values[-1]
-    if return_all:
-      return x_values
-    return x
+    return x_values
 
 def evaluate_newton_raphson(x_i, function, function_prime):
     return x_i - (function(x_i) / function_prime(x_i))
 
-def secant(x, function, x_tolerance=DEFAULT_X_TOLERANCE, return_all=False):
+def secant(x, function, x_tolerance = DEFAULT_X_TOLERANCE):
+    """ Returns the last value from secant_all() """
+    return secant_all(x, function, x_tolerance)[-1]
+
+def secant_all(x, function, x_tolerance = DEFAULT_X_TOLERANCE):
     """
     Performs the secant method for root finding
     Input:  x -- independent variable
             function -- Function to be evaluated
             x_tolerance -- Accuracy of guessed root to the actual value
-    Output: x_values -- List guesses for root
+    Output: x_values -- List guesses at all iterations
     """
     x_1 = x + 1
     x_values = [x, x_1]
@@ -58,9 +70,7 @@ def secant(x, function, x_tolerance=DEFAULT_X_TOLERANCE, return_all=False):
         x_1 = x_values[-1]
         x_1 = evaluate_secant(x, x_1, function)
         x_values.append(x_1)
-    if return_all:
-        return x_values
-    return x_1
+    return x_values
 
 def evaluate_secant(x_i, x_i_minus_1, function):
     return x_i - (function(x_i) * (x_i - x_i_minus_1) / (function(x_i) - function(x_i_minus_1)))

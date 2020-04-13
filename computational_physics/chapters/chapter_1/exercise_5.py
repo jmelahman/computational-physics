@@ -37,20 +37,16 @@ def calculate_error(value, exact):
         return exact - value
     return 0
 
-def main():
-    """Executes exercise 1.5"""
-
-    file_directory = os.path.dirname(os.path.realpath(__file__))
-    output_filepath = os.path.join(file_directory, 'output/exercise_5.txt')
+def create_output():
+    output = ''
     initial_guess = 1.0                                # initial guess of root
     x_tolerance = 0.0001
     exact = math.sqrt(5)
-    output_string = ''
 
-    newton_raphson_results = root_finding.newton_raphson(initial_guess,
-        my_function, my_function_prime, x_tolerance, True)
-    secant_results = root_finding.secant(initial_guess, my_function,
-        x_tolerance, True)
+    newton_raphson_results = root_finding.newton_raphson_all(initial_guess,
+        my_function, my_function_prime, x_tolerance)
+    secant_results = root_finding.secant_all(initial_guess, my_function,
+        x_tolerance)
 
     for iteration, (newton_raphson, secant) in \
         enumerate(itertools.zip_longest(newton_raphson_results,
@@ -59,11 +55,20 @@ def main():
         newton_raphson_error = calculate_error(newton_raphson, exact)
         secant_error = calculate_error(secant, exact)
         # Outputs in a format compatible with LaTex tabular :)
-        output_string += '{0} & {1:.6f} & {2:.6f}\n'.format(iteration,
+        output += '{0} & {1:.6f} & {2:.6f}\n'.format(iteration,
             newton_raphson_error, secant_error)
+    return output
+
+def main():
+    """Executes exercise 1.5"""
+
+    file_directory = os.path.dirname(os.path.realpath(__file__))
+    output_filepath = os.path.join(file_directory, 'output/exercise_5.txt')
+
+    output = create_output()
 
     with open(output_filepath, 'w+') as out_file:
-        out_file.write(output_string)
+        out_file.write(output)
 
 
 if __name__ == '__main__':
