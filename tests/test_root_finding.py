@@ -1,7 +1,7 @@
 import math
 import unittest
 
-from computational_physics import root_finding
+from lib import root_finding
 
 class TestRootFinding(unittest.TestCase):
     def setUp(self):
@@ -10,18 +10,18 @@ class TestRootFinding(unittest.TestCase):
         self.x_tolerance = 0.0001
 
     def test_search(self):
-        root = root_finding.search(self.initial_guess, self.my_function,
+        root = root_finding.search(self.initial_guess, self._function,
             self.x_tolerance)
         self.check_error(root)
 
     def test_secant(self):
-        root = root_finding.secant(self.initial_guess, self.my_function,
+        root = root_finding.secant(self.initial_guess, self._function,
             self.x_tolerance)
         self.check_error(root)
 
     def test_newton_raphson(self):
         root = root_finding.newton_raphson(self.initial_guess,
-            self.my_function, self.my_function_prime, self.x_tolerance)
+            self._function, self._function_prime, self.x_tolerance)
         self.check_error(root)
 
     def check_error(self, observed_value):
@@ -31,11 +31,11 @@ class TestRootFinding(unittest.TestCase):
             .format(observed_value, self.expected))
 
     @staticmethod
-    def my_function(x):
+    def _function(x):
         return math.pow(x, 2) - 5
 
     @staticmethod
-    def my_function_prime(x):
+    def _function_prime(x):
         return 2.0 * x
 
 if __name__ == '__main__':

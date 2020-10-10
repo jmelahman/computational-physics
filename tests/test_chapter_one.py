@@ -1,12 +1,12 @@
 import unittest
 
-from computational_physics.chapters.chapter_1 import exercise_1
-from computational_physics.chapters.chapter_1 import exercise_2
-from computational_physics.chapters.chapter_1 import exercise_5
+from chapter.one.exercise import one as e11
+from chapter.one.exercise import two as e12
+from chapter.one.exercise import five as e15
 
 class TestQuadrature(unittest.TestCase):
 
-    def test_exercise_1_output(self):
+    def test_exercise_one_output(self):
         expected_output = """0.50000 & -0.228254 & 0.183789 & -0.022233 & -0.009499 & -0.001093
 0.20000 & -0.087462 & 0.080272 & -0.003595 & -0.000586 & -0.000029
 0.10000 & -0.042939 & 0.041138 & -0.000900 & -0.000072 & -0.000002
@@ -23,10 +23,10 @@ class TestQuadrature(unittest.TestCase):
 0.00002 & -0.000008 & 0.000008 & -0.000000 & -0.000000 & 0.000000
 0.00001 & -0.000004 & 0.000004 & -0.000000 & -0.000000 & -0.000000
 """
-        output = exercise_1.create_output()
+        output = e11.create_output()
         self.assertEqual(output, expected_output)
 
-    def test_exercise_2_output(self):
+    def test_exercise_two_output(self):
         expected_output = """4 & 0.2500000 & 0.008940 & 0.000037 & 0.000001
 8 & 0.1250000 & 0.002237 & 0.000002 & 0.000000
 16 & 0.0625000 & 0.000559 & 0.000000 & 0.000000
@@ -34,10 +34,10 @@ class TestQuadrature(unittest.TestCase):
 64 & 0.0156250 & 0.000035 & 0.000000 & 0.000000
 128 & 0.0078125 & 0.000009 & 0.000000 & -0.000000
 """
-        output = exercise_2.create_output()
+        output = e12.create_output()
         self.assertEqual(output, expected_output)
 
-    def test_exercise_5_output(self):
+    def test_exercise_five_output(self):
         expected_output = """0 & 1.236068 & 1.236068
 1 & -0.763932 & 0.236068
 2 & -0.097265 & -0.097265
@@ -45,7 +45,7 @@ class TestQuadrature(unittest.TestCase):
 4 & -0.000001 & 0.000113
 5 & 0.000000 & -0.000000
 """
-        output = exercise_5.create_output()
+        output = e15.create_output()
         self.assertEqual(output, expected_output)
 
 if __name__ == '__main__':
