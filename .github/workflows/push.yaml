@@ -15,7 +15,8 @@ jobs:
           python -m pip install --upgrade pip &&
           pip3 install -r requirements.txt &&
           mkdir -p $(python3 -m site --user-site) &&
-          ln -s $(pwd) $(python3 -m site --user-site)
+          ln -s $(pwd) $(python3 -m site --user-site) &&
+          ls -a $(python3 -m site --user-site)
       - name: Lint python
         run: >-
           pylint --fail-under=4.46 **/*.py
