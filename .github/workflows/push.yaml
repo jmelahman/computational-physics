@@ -17,9 +17,9 @@ jobs:
           mkdir -p $(python3 -m site --user-site) &&
           ln -s $(pwd) $(python3 -m site --user-site) &&
           ls -a $(python3 -m site --user-site)
-      - name: Lint python
-        run: >-
-          pylint --fail-under=4.46 **/*.py
       - name: Run tests
         run: >-
           python -m unittest discover tests/
+      - name: Lint python
+        run: >-
+          pylint --fail-under=4.46 **/*.py
