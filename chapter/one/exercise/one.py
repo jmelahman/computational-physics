@@ -36,7 +36,7 @@ def create_output():
         error_symmetric4 = differentiation.symmetric4(my_sin, value, h) - exact
         error_symmetric5 = differentiation.symmetric5(my_sin, value, h) - exact
         # Outputs in a format compatible with LaTex tabular :)
-        output += '{0:.5f} & {1:.6f} & {2:.6f} & {3:.6f} & {4:.6f} & {5:.6f}\n'.format(
+        output += '{:.5f} & {:.6f} & {:.6f} & {:.6f} & {:.6f} & {:.6f}\n'.format(
             h, error_backward, error_forward, error_symmetric3,
             error_symmetric4, error_symmetric5)
     return output
