@@ -6,15 +6,15 @@ def run_module(name):
     module.main()
 
 def main(chapter, exercise, example, project):
-    chapters_path = 'computational_physics.chapters'
+    chapters_path = 'chapter'
     if exercise:
-        module_name = '{}.chapter_{}.exercise_{}'.format(chapters_path, chapter, exercise)
+        module_name = '{}.{}.exercise.{}'.format(chapters_path, chapter, exercise)
         run_module(module_name)
     if example:
-        module_name = '{}.chapter_{}.example'.format(chapters_path, chapter)
+        module_name = '{}.{}.example'.format(chapters_path, chapter)
         run_module(module_name)
     if project:
-        module_name = '{}.chapter_{}.project'.format(chapters_path, chapter)
+        module_name = '{}.{}.project'.format(chapters_path, chapter)
         run_module(module_name)
 
 if __name__ == '__main__':
