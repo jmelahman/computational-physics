@@ -5,7 +5,7 @@ py_binary(
     srcs = ["one.py"],
     python_version = "PY3",
     deps = [
-        "//lib:differentiation",
+        "//library:differentiation",
     ],
     visibility = ["//tests:__pkg__"],
 )
@@ -15,8 +15,8 @@ py_binary(
     srcs = ["two.py"],
     python_version = "PY3",
     deps = [
-        "//lib:definitions",
-        "//lib:quadrature",
+        "//library:definitions",
+        "//library:quadrature",
     ],
     visibility = ["//tests:__pkg__"],
 )
@@ -26,7 +26,7 @@ py_binary(
     srcs = ["five.py"],
     python_version = "PY3",
     deps = [
-        "//lib:root_finding",
+        "//library:root_finding",
     ],
     visibility = ["//tests:__pkg__"],
 )

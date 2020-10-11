@@ -16,7 +16,7 @@ py_test(
     srcs = ["test_quadrature.py"],
     python_version = "PY3",
     deps = [
-        "//lib:quadrature",
+        "//library:quadrature",
     ],
 )
 
@@ -25,6 +25,6 @@ py_test(
     srcs = ["test_root_finding.py"],
     python_version = "PY3",
     deps = [
-        "//lib:root_finding",
+        "//library:root_finding",
     ],
 )

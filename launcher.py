@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 import argparse
-import importlib
+import importlibrary
 
 def run_module(name):
-    module = importlib.import_module(name, package=None)
+    module = importlibrary.import_module(name, package=None)
     module.main()
 
 def main(chapter, exercise, example, project):

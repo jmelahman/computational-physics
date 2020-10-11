@@ -13,8 +13,8 @@ Solution by Jamison Lahman, June 11, 2018
 import math
 import os
 
-from lib import quadrature
-from lib import definitions
+from library import quadrature
+from library import definitions
 
 def my_function(x):
     """

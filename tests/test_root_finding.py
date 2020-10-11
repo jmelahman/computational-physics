@@ -1,7 +1,7 @@
 import math
 import unittest
 
-from lib import root_finding
+from library import root_finding
 
 class TestRootFinding(unittest.TestCase):
     def setUp(self):

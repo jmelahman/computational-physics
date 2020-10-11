@@ -1,7 +1,7 @@
 import math
 import unittest
 
-from lib import quadrature
+from library import quadrature
 
 class TestQuadrature(unittest.TestCase):
     def setUp(self):
