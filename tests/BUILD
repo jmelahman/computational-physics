@@ -5,9 +5,9 @@ py_test(
     srcs = ["test_chapter_one.py"],
     python_version = "PY3",
     deps = [
-        "//chapter/one/exercise:one",
-        "//chapter/one/exercise:two",
-        "//chapter/one/exercise:five",
+        "//phys/chapter_one/exercise:one",
+        "//phys/chapter_one/exercise:two",
+        "//phys/chapter_one/exercise:five",
     ],
 )
 
@@ -16,7 +16,7 @@ py_test(
     srcs = ["test_quadrature.py"],
     python_version = "PY3",
     deps = [
-        "//library:quadrature",
+        "//phys/library:quadrature",
     ],
 )
 
@@ -25,6 +25,6 @@ py_test(
     srcs = ["test_root_finding.py"],
     python_version = "PY3",
     deps = [
-        "//library:root_finding",
+        "//phys/library:root_finding",
     ],
 )

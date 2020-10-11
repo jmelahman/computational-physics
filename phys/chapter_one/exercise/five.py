@@ -12,7 +12,7 @@ import itertools
 import math
 import os
 
-from library import root_finding
+from phys.library import root_finding
 
 def my_function(x):
     """

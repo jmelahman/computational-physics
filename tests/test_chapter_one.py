@@ -1,8 +1,8 @@
 import unittest
 
-from chapter.one.exercise import one as e11
-from chapter.one.exercise import two as e12
-from chapter.one.exercise import five as e15
+from phys.chapter_one.exercise import one
+from phys.chapter_one.exercise import two
+from phys.chapter_one.exercise import five
 
 class TestQuadrature(unittest.TestCase):
 
@@ -23,7 +23,7 @@ class TestQuadrature(unittest.TestCase):
 0.00002 & -0.000008 & 0.000008 & -0.000000 & -0.000000 & 0.000000
 0.00001 & -0.000004 & 0.000004 & -0.000000 & -0.000000 & -0.000000
 """
-        output = e11.create_output()
+        output = one.create_output()
         self.assertEqual(output, expected_output)
 
     def test_exercise_two_output(self):
@@ -34,7 +34,7 @@ class TestQuadrature(unittest.TestCase):
 64 & 0.0156250 & 0.000035 & 0.000000 & 0.000000
 128 & 0.0078125 & 0.000009 & 0.000000 & -0.000000
 """
-        output = e12.create_output()
+        output = two.create_output()
         self.assertEqual(output, expected_output)
 
     def test_exercise_five_output(self):
@@ -45,7 +45,7 @@ class TestQuadrature(unittest.TestCase):
 4 & -0.000001 & 0.000113
 5 & 0.000000 & -0.000000
 """
-        output = e15.create_output()
+        output = five.create_output()
         self.assertEqual(output, expected_output)
 
 if __name__ == '__main__':

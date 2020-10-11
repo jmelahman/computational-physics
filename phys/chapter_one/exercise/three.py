@@ -15,8 +15,8 @@ TODO: u-substitution method
 import math
 import os
 
-from library import quadrature
-from library import definitions
+from phys.library import quadrature
+from phys.library import definitions
 
 def trig_sub(t):
     """
