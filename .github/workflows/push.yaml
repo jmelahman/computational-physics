@@ -15,8 +15,8 @@ jobs:
           python -m pip install --upgrade pip &&
           pip3 install -r requirements.txt &&
           mkdir -p $(python3 -m site --user-site) &&
-          ln -s $(pwd) $(python3 -m site --user-site) &&
-          ls -a $(python3 -m site --user-site)
+          ln -s $(pwd)/chapter $(python3 -m site --user-site) &&
+          ln -s $(pwd)/lib $(python3 -m site --user-site)
       - name: Run tests
         run: >-
           python -m unittest discover tests/
